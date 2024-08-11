@@ -53,11 +53,20 @@ const ViewPeople = () => {
     navigate(`/admin/forms/people/edit/${person.id}`);
   };
 
-  if (isLoading) return <Loading/>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error}</div>;
 
+  // Group people by position
+  const groupedPeople = people.reduce((acc, person) => {
+    if (!acc[person.position]) {
+      acc[person.position] = [];
+    }
+    acc[person.position].push(person);
+    return acc;
+  }, {});
+
   return (
-    <div className="mx-auto py-4 px-6">
+    <div className="container mx-auto py-4 px-6">
       {deleteModalOpen && (
         <Modal isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} title="Confirm Deletion">
           <p>Are you sure you want to delete {currentPerson?.name}? This action cannot be undone.</p>
@@ -67,17 +76,27 @@ const ViewPeople = () => {
         </Modal>
       )}
 
-      <h1 className="text-2xl font-bold mb-4">People Directory</h1>
-      {people.map(person => (
-        <div key={person.id} className="border p-4 rounded mb-2 flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-semibold">{person.name}</h2>
-            <p className="text-sm">{person.position}</p>
-            <p className="text-sm">{person.details}</p>
-          </div>
-          <div>
-            <button onClick={() => promptDelete(person)} className="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded mr-2">Delete</button>
-            <button onClick={() => handleEdit(person)} className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded">Edit</button>
+      <h1 className="text-2xl font-bold mb-8 text-center">People Directory</h1>
+
+      {Object.keys(groupedPeople).map((position, index) => (
+        <div key={index} className="mb-8">
+          <h2 className="text-xl font-semibold mb-4 border-b-2 pb-2">{position}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {groupedPeople[position].map(person => (
+              <div key={person.id} className="border p-4 rounded shadow-lg flex flex-col justify-between bg-white hover:shadow-2xl transition-shadow duration-300">
+                {person.photoUrl && (
+                  <img src={person.photoUrl} alt={person.name} className="w-full h-48 object-cover rounded-md mb-4" />
+                )}
+                <div>
+                  <h3 className="text-lg font-semibold">{person.name}</h3>
+                  <p className="text-sm text-gray-600">{person.details}</p>
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <button onClick={() => promptDelete(person)} className="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded">Delete</button>
+                  <button onClick={() => handleEdit(person)} className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-3 rounded">Edit</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ))}

@@ -47,7 +47,7 @@ const Testimonials = () => {
   }
 
   return (
-    <section className="relative isolate overflow-hidden bg-gradient-to-r from-teal-600 to-blue-700 px-4 py-12 sm:py-16 lg:px-6 isolate">
+    <section className="relative overflow-hidden bg-gradient-to-r from-teal-600 to-blue-700 px-4 py-12 sm:py-16 lg:px-6 isolate">
       <div className="mx-auto max-w-2xl lg:max-w-3xl">
         <div className="text-center text-2xl font-bold leading-8 text-white sm:text-3xl sm:leading-9">
           <h5 className="text-yellow-300 uppercase font-semibold">Testimonials</h5>

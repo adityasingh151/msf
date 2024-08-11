@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MathematicalSciencesFoundation = () => {
   const sectionRefs = {
@@ -8,6 +9,19 @@ const MathematicalSciencesFoundation = () => {
     fourth: useRef(null),
     fifth: useRef(null),
     sixth: useRef(null),
+  };
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+      // console.log("buttoin is pressed.")
+      navigate('/courses'); // Replace with your target path
+  };
+
+  const [openSection, setOpenSection] = useState(null);
+
+  const toggleSection = (section) => {
+      setOpenSection(prevOpenSection => (prevOpenSection === section ? null : section));
   };
 
   useEffect(() => {
@@ -39,45 +53,59 @@ const MathematicalSciencesFoundation = () => {
 
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100">
-      <section ref={sectionRefs.first} data-animation="animate-fly-in" className="relative w-full h-60 mt-0">
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4">
-        <div
-          className="absolute top-0 left-0 right-0 bottom-0 bg-repeat blur-sm"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='50' height='50' patternTransform='scale(3) rotate(50)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(22, 31%, 66%, 1)'/><path d='M0 0v50h50V0zm.88.88h23.24v23.24H.87zm25 0h23.24v23.24H25.87zm-25 25h23.24v23.24H.87zm25 0h23.24v23.24H25.87z'  stroke-width='9' stroke='none' fill='hsla(7,52.6%,30.6%,1)'/><path d='M0 0v9.31A9.3 9.3 0 0 0 9.31.01V0zm40.69 0a9.3 9.3 0 0 0 9.3 9.31V0zm-15.7 13.76a11.23 11.23 0 1 0 0 22.47 11.23 11.23 0 0 0 0-22.47zM0 40.69V50h9.31A9.3 9.3 0 0 0 0 40.7zm50 0a9.3 9.3 0 0 0-9.31 9.3V50h9.3z'  stroke-width='9' stroke='none' fill='hsla(6,56.8%,49%,1)'/><path d='M18.91 0a6.1 6.1 0 0 0 12.18 0zM0 18.9v12.2a6.1 6.1 0 0 0 0-12.2zm50 0a6.1 6.1 0 1 0 0 12.2zm-25 25a6.1 6.1 0 0 0-6.1 6.1h12.2a6.1 6.1 0 0 0-6.1-6.1z'  stroke-width='9' stroke='none' fill='hsla(174,20.8%,19.8%,1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>")`,
-          }}
-        ></div>
-        {/* Content with glowing effect */}
-        <h1 className="text-blue-50 text-5xl font-bold mb-4 animate-bounce">
-          Mathematical Sciences Foundation
-        </h1>
-        <p className="text-blue-100 text-md font-bold mb-4 animate-pulse italic">
-          A initiative by Prof. Dinesh Singh
-        </p>
-        
-      </div>
+      <section ref={sectionRefs.first} data-animation="animate-fly-in" className="relative w-full h-60 mt-0 bg-gradient-to-r from-teal-600 to-blue-700 h-screen">
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-4 ">
+          {/* <div
+            className="absolute top-0 left-0 right-0 bottom-0 bg-repeat blur-sm"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='50' height='50' patternTransform='scale(3) rotate(50)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(22, 31%, 66%, 1)'/><path d='M0 0v50h50V0zm.88.88h23.24v23.24H.87zm25 0h23.24v23.24H25.87zm-25 25h23.24v23.24H.87zm25 0h23.24v23.24H25.87z'  stroke-width='9' stroke='none' fill='hsla(7,52.6%,30.6%,1)'/><path d='M0 0v9.31A9.3 9.3 0 0 0 9.31.01V0zm40.69 0a9.3 9.3 0 0 0 9.3 9.31V0zm-15.7 13.76a11.23 11.23 0 1 0 0 22.47 11.23 11.23 0 0 0 0-22.47zM0 40.69V50h9.31A9.3 9.3 0 0 0 0 40.7zm50 0a9.3 9.3 0 0 0-9.31 9.3V50h9.3z'  stroke-width='9' stroke='none' fill='hsla(6,56.8%,49%,1)'/><path d='M18.91 0a6.1 6.1 0 0 0 12.18 0zM0 18.9v12.2a6.1 6.1 0 0 0 0-12.2zm50 0a6.1 6.1 0 1 0 0 12.2zm-25 25a6.1 6.1 0 0 0-6.1 6.1h12.2a6.1 6.1 0 0 0-6.1-6.1z'  stroke-width='9' stroke='none' fill='hsla(174,20.8%,19.8%,1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>")`,
+            }}
+          ></div> */}
+          <h1 className="text-blue-50 text-5xl font-bold mb-4 animate-bounce">
+            Mathematical Sciences Foundation
+          </h1>
+          <p className="text-blue-100 text-md font-bold mb-4 animate-pulse italic">
+            A initiative by Prof. Dinesh Singh
+          </p>
+        </div>
       </section>
 
-      <section ref={sectionRefs.second} data-animation="animate-slide-in" className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <section ref={sectionRefs.second} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 p-4">
-              <img src="https://mathscifound.org/wp-content/uploads/2019/02/blackboard-606627_960_720-1.jpg" alt="Our Story" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
-            </div>
-            <div className="w-full md:w-1/2 p-4">
               <h2 className="text-indigo-600 text-3xl font-bold mb-4">Our Story</h2>
               <p className="text-lg leading-relaxed mb-4 font-serif">
-                In 1998, these varied activities were consolidated into the Centre for Mathematical Sciences (CMS), housed at St. Stephen’s College. In 2000, significant funding was obtained from the ICICI Bank leading to CMS becoming the ICICI Centre for Mathematical Sciences or ICMS. Many innovative programmes were created under the rubric of ICMS which soon grew to a point where it was no longer sufficient to house and support them.
+                The Mathematical Sciences Foundation (MSF) has a rich history that traces back to the consolidation of various mathematical activities into the Centre for Mathematical Sciences (CMS) at St. Stephen's College in 1998. In 2000, substantial funding from ICICI Bank transformed CMS into the ICICI Centre for Mathematical Sciences (ICMS). This center rapidly expanded, offering innovative programs that outgrew its initial capacity, leading to the establishment of the Mathematical Sciences Foundation in July 2002. Dr. Anil Wilson, Principal of St. Stephen's College and former Vice-Chancellor of Himachal Pradesh University, served as the Founder Chairman.
+              </p>
+            </div>
+            <div className="w-full md:w-1/2 p-4">
+              <img src="https://mathscifound.org/wp-content/uploads/2019/02/blackboard-606627_960_720-1.jpg" alt="Our Story" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section ref={sectionRefs.third} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
+        <div className="container mx-auto px-8">
+          <div className="flex flex-wrap">
+            <div className="w-full md:w-1/2 p-4">
+              <img src="https://mathscifound.org/wp-content/uploads/2019/02/blackboard-606627_960_720-1.jpg" alt="Our Mission" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
+            </div>
+            <div className="w-full md:w-1/2 p-4">
+              <h2 className="text-indigo-600 text-3xl font-bold mb-4">Our Mission</h2>
+              <p className="text-lg leading-relaxed mb-4 font-serif">
+                MSF's mission is to promote mathematics at all educational levels, from school to research. It operates from Delhi, India, and offers undergraduate programs in Mathematical Finance and Mathematical Simulation with IT, and graduate programs in partnership with the University of Houston leading to PhDs in Mathematics, Computer Science, and Physics. The foundation also hosts significant seminars and conferences, such as the "Life of Mathematics" and "Mathematics in the 20th Century," attracting prominent mathematicians worldwide.
               </p>
               <p className="text-lg leading-relaxed font-serif">
-                Thus, Mathematical Sciences Foundation was founded in July 2002, with the support of many leading citizens of India and with ICICI Bank as an institutional member. The Founder Chairman of the Foundation was Dr. Anil Wilson, Principal of St. Stephen’s College and former Vice-Chancellor of Himachal Pradesh University.
+                The foundation's initiatives extend to contests like the MSF Challenge and Recognizing Ramanujan, aimed at encouraging school students to engage with mathematics innovatively and recognize their problem-solving skills. These contests not only promote mathematical thinking but also honor the legacy of great Indian mathematicians such as Srinivasa Ramanujan.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section ref={sectionRefs.third} data-animation="animate-slide-in" className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <section ref={sectionRefs.fourth} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 p-4">
@@ -96,137 +124,91 @@ const MathematicalSciencesFoundation = () => {
         </div>
       </section>
 
-      <section ref={sectionRefs.fourth} data-animation="animate-slide-in-right" className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100">
-        <div className="container mx-auto px-8">
-          <h2 className="text-indigo-600 text-3xl font-bold mb-8 text-center">Our Programmes</h2>
-          <div className="flex flex-wrap">
-            <div className="w-full md:w-1/3 p-4">
-              <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                <img src="https://mathscifound.org/wp-content/uploads/2019/02/iconfinder_JD-04_2246801.png" alt="Online/Hybrid Programmes" className="w-16 h-16 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Online/Hybrid Programmes</h3>
-                <div>
-                  Under The Internet College, we offer courses delivered online and in hybrid mode under the following tracks:
-                  <ul className="list-disc pl-5">
-                    <li>Language and communication</li>
-                    <li>Data science</li>
-                    <li>Technology</li>
-                    <li>Humanities and creative disciplines</li>
-                  </ul>
-                </div>
-                <button className="mt-4 text-green-500 hover:text-green-700 font-bold">Find Out More</button>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 p-4">
-              <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                <img src="https://mathscifound.org/wp-content/uploads/2019/02/iconfinder_graduation-cap_3688484.png" alt="Certificates/Diplomas" className="w-16 h-16 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">Certificates/Diplomas</h3>
-                <p className="text-lg leading-relaxed font-serif">
-                  We offer various certificate and diploma courses that are short-term in nature. These courses are in areas pertaining to the application of mathematics to different disciplines. We also create bespoke courses for specific corporate training requirements.
-                </p>
-                <button className="mt-4 text-green-500 hover:text-green-700 font-bold">Find Out More</button>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 p-4">
-              <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                <img src="https://mathscifound.org/wp-content/uploads/2019/02/iconfinder_statistic_job_seeker_employee_unemployee_work_2620500.png" alt="Internships" className="w-16 h-16 mb-4" />
-                <h3 className="text-2xl font-bold mb-2 ">Internships</h3>
-                <p className="text-lg leading-relaxed font-serif">
-                  One of our main aims is to enable young students to be more employable as well as to spur entrepreneurship. One of the ways in which we offer such real-world skills is through short-term internships. These allow a student to learn within a flexible work environment.
-                </p>
-                <button className="mt-4 text-green-500 hover:text-green-700 font-bold">Find Out More</button>
-              </div>
-            </div>
-          </div>
+{/* Button to courses */}
+      <div className='py-6 w-full flex flex-col items-center justify-center'>
+            <h1 className="text-indigo-600 text-3xl font-bold mb-2">
+                Discover Our Past Courses
+            </h1>
+            <button
+                onClick={handleClick}
+                className="bg-white text-purple-600 font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
+            >
+                Learn Our Courses
+            </button>
         </div>
-      </section>
 
-      <section ref={sectionRefs.fifth} data-animation="animate-fly-in" className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <div className="text-center py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <h2 className="text-indigo-600 text-3xl font-bold mb-4">FAQs</h2>
         <div className="container mx-auto px-8">
-          <div className="flex flex-wrap">
-            <div className="w-full md:w-1/3 p-4">
-              <h2 className="text-indigo-600 text-3xl font-bold mb-4">Our Mission</h2>
-              <p className="text-lg leading-relaxed mb-4 font-serif">
-                The Mathematical Sciences Foundation aims to create a role model for education in India. The engine that drives this role model is the discipline of mathematics and its myriad connections to all aspects of human endeavour.
-              </p>
-              <p className="text-lg leading-relaxed font-serif">
-                Our mission is to provide a dynamic and strong institutional platform that will nurture out-of-the-box thinking, work together with the industry, attract leading mathematicians and scientists from all over the world, and serve the needs of society and our nation at large.
-              </p>
-            </div>
-            <div className="w-full md:w-2/3 p-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2">Nurture Out-of-the-Box Thinking</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    We aim to spur innovation and invention that is relevant - both for the industry and the world at large.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2 ">Industry Partnership</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    Our consulting programmes foster close interaction with the corporate world to create relevant solutions.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2 ">Attract the Best Thought-Leaders</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    We provide a collaboration platform for leading mathematicians, scientists, and educationists from around the world.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2 ">Offer Innovative Learning Modules</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    Our online and hybrid delivery programmes are designed to impart relevant skills for job creators and job seekers.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2 ">Collaborate with Universities</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    Our programmes are offered in collaboration with leading universities and institutions internationally.
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-                  <h3 className="text-2xl font-bold mb-2 ">Serve the Needs of the Nation</h3>
-                  <p className="text-lg leading-relaxed font-serif">
-                    Helping the young minds of today gain the skills that would help the growth of the nation for tomorrow.
-                  </p>
-                </div>
+          <div className="mb-5">
+            <button
+              onClick={() => toggleSection('achievements')}
+              className="flex justify-between items-center w-full py-4 px-6 text-left text-xl font-bold text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 rounded-lg focus:outline-none"
+            >
+              Notable Achievements of the Mathematical Sciences Foundation (MSF)
+              <span>{openSection === 'achievements' ? '−' : '+'}</span>
+            </button>
+            {openSection === 'achievements' && (
+              <div className="p-6 bg-white rounded-b-lg">
+                <p className="text-lg leading-relaxed mb-4 font-serif">
+                  The Mathematical Sciences Foundation (MSF) has achieved significant milestones since its inception. It has successfully integrated innovative educational programs that cater to various levels of mathematical education, from school to advanced research. The foundation has been instrumental in organizing high-profile seminars and conferences, such as the "Life of Mathematics" program, which invites eminent mathematicians to engage with students and faculty. Another notable event was the international conference "Mathematics in the 20th Century," held in 2006 to commemorate the birth centenary of André Weil.
+                </p>
               </div>
-            </div>
+            )}
           </div>
-        </div>
-      </section>
 
-      <section ref={sectionRefs.sixth} data-animation="animate-slide-in-bottom-right" className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100">
-        <div className="container mx-auto px-8">
-          <h2 className="text-4xl font-bold mb-8 text-center text-indigo-600">Some of our past programmes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-              <h3 className="text-2xl font-bold mb-2 ">From a Life of Mathematics</h3>
-              <p className="text-lg leading-relaxed font-serif">
-                We invited some leading mathematicians of the world to reside, interact with, and lecture students and faculty at the University of Delhi. The lectures covered their work as well as various personal experiences and were informal and spontaneous, taking place in lecture rooms, offices, over meals, or on walks in the city - anywhere and anytime.
-              </p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-              <h3 className="text-2xl font-bold mb-2 ">Nurture Programme</h3>
-              <p className="text-lg leading-relaxed font-serif">
-                We conducted a series of very popular seminars on diverse topics such as graph theory, group actions, topological groups, econometrics, game theory, optimisation, encryption, image recognition, spectral theory for compact operators, applications in linear algebra, stellar systems, and more.
-              </p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-              <h3 className="text-2xl font-bold mb-2 ">Training Programmes</h3>
-              <p className="text-lg leading-relaxed font-serif">
-                We have successfully offered certificate programmes in applications of mathematics - Mathematical Finance, Corporate Finance, Mathematical Simulation with Information Technology. Our Excel for Business Finance course has been taken by over 2,000 students at various b-school campuses.
-              </p>
-            </div>
-            <div className="p-4 bg-white rounded-lg shadow-lg transition transform hover:scale-105 duration-300">
-              <h3 className="text-2xl font-bold mb-2 ">Outreach Efforts</h3>
-              <p className="text-lg leading-relaxed font-serif">
-                A significant portion of our training programmes have been offered free-of-cost. We have granted scholarships, fee waivers and interest-free loans to students from economically deprived backgrounds. We also strive to make a special effort to reach out to students from backgrounds, locations or communities where education is at a premium.
-              </p>
-            </div>
+          <div className="mb-5">
+            <button
+              onClick={() => toggleSection('partnership')}
+              className="flex justify-between items-center w-full py-4 px-6 text-left text-xl font-bold text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 rounded-lg focus:outline-none"
+            >
+              Benefits of the Partnership with the University of Houston
+              <span>{openSection === 'partnership' ? '−' : '+'}</span>
+            </button>
+            {openSection === 'partnership' && (
+              <div className="p-6 bg-white rounded-b-lg">
+                <p className="text-lg leading-relaxed mb-4 font-serif">
+                  The partnership between the MSF and the University of Houston has been highly beneficial in expanding the foundation's academic and research capabilities. This collaboration allows graduate students to receive rigorous training in mathematics in India before proceeding to the University of Houston for advanced studies. The programs are designed to prepare students for both academic careers and industry roles. This partnership has also enhanced the research opportunities available to students, providing them with exposure to international standards and practices in mathematical sciences.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="mb-5">
+            <button
+              onClick={() => toggleSection('seminars')}
+              className="flex justify-between items-center w-full py-4 px-6 text-left text-xl font-bold text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 rounded-lg focus:outline-none"
+            >
+              Seminars and Conferences Hosted by MSF
+              <span>{openSection === 'seminars' ? '−' : '+'}</span>
+            </button>
+            {openSection === 'seminars' && (
+              <div className="p-6 bg-white rounded-b-lg">
+                <p className="text-lg leading-relaxed mb-4 font-serif">
+                  MSF organizes a variety of seminars and conferences aimed at fostering a deeper understanding and appreciation of mathematics. One of the key programs is the "Life of Mathematics," which annually brings distinguished mathematicians to St. Stephen's College for direct interaction with students and faculty. Recent participants have included notable figures like Sir Michael Atiyah and Martin Golubitsky. The "Mathematics in the 20th Century" conference, held in 2006, was another significant event that highlighted the contributions of mathematicians over the past century and facilitated discussions on future directions in the field.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="mb-5">
+            <button
+              onClick={() => toggleSection('financial')}
+              className="flex justify-between items-center w-full py-4 px-6 text-left text-xl font-bold text-white bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 rounded-lg focus:outline-none"
+            >
+              Financial Aid and Scholarships
+              <span>{openSection === 'financial' ? '−' : '+'}</span>
+            </button>
+            {openSection === 'financial' && (
+              <div className="p-6 bg-white rounded-b-lg">
+                <p className="text-lg leading-relaxed mb-4 font-serif">
+                MSF offers scholarships and fellowships to deserving students based on merit and financial need. These scholarships are intended to cover tuition fees and, in some cases, provide a stipend for living expenses. For instance, graduate students participating in the programs in collaboration with the University of Houston receive training at MSF for a year, during which they are likely supported through scholarships or stipends to cover their educational expenses​.
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

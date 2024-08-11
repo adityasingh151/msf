@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,7 +7,7 @@ import { getDatabase, ref, onValue } from "firebase/database";
 import { Link } from 'react-router-dom';
 import Loading from './LoadSaveAnimation/Loading';
 
-function SampleNextArrow(props) {
+const SampleNextArrow = React.memo((props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -30,9 +30,9 @@ function SampleNextArrow(props) {
       <FaArrowRight color="white" />
     </div>
   );
-}
+});
 
-function SamplePrevArrow(props) {
+const SamplePrevArrow = React.memo((props) => {
   const { className, style, onClick } = props;
   return (
     <div
@@ -55,59 +55,55 @@ function SamplePrevArrow(props) {
       <FaArrowLeft color="white" />
     </div>
   );
-}
+});
 
-function WorksSection() {
-  const [isWorkshopLoading, setIsWorkshopLoading] = useState(true);
-  const [isEventLoading, setIsEventLoading] = useState(true);
+const WorksSection = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [works, setWorks] = useState([]);
 
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     const db = getDatabase();
+    const workshopRef = ref(db, 'workshops');
+    const eventsRef = ref(db, 'events');
 
-    const fetchWorkshops = () => {
-      const workshopRef = ref(db, 'workshops');
-      onValue(workshopRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const workshopList = Object.keys(data).map(key => ({
-            id: key,
-            image: data[key].aboutImage,
-            title: data[key].aboutTitle,
-            description: data[key].headerTitle,
-            type: "workshop"
-          }));
-          setWorks(prevWorks => [...prevWorks, ...workshopList]);
-          setIsWorkshopLoading(false);
-        } else {
-          console.log("No data available for workshops");
-        }
+    const fetchDataPromise = async (ref, type) => {
+      return new Promise((resolve) => {
+        onValue(ref, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const list = Object.keys(data).map(key => ({
+              id: key,
+              image: data[key].aboutImage,
+              title: data[key].headerTitle,
+              description: type === 'workshop' ? data[key].aboutTitle : data[key].headerSubTitle,
+              type,
+            }));
+            resolve(list);
+          } else {
+            console.log(`No data available for ${type}`);
+            resolve([]);
+          }
+        });
       });
     };
 
-    const fetchEvents = () => {
-      const eventsRef = ref(db, 'events');
-      onValue(eventsRef, (snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const eventList = Object.keys(data).map(key => ({
-            id: key,
-            image: data[key].aboutImage,
-            title: data[key].headerTitle,
-            description: data[key].headerSubTitle,
-            type: "event"
-          }));
-          setWorks(prevWorks => [...prevWorks, ...eventList]);
-          setIsEventLoading(false)
-        } else {
-          console.log("No data available for events");
-        }
-      });
-    };
+    try {
+      const [workshops, events] = await Promise.all([
+        fetchDataPromise(workshopRef, 'workshop'),
+        fetchDataPromise(eventsRef, 'event'),
+      ]);
 
-    fetchWorkshops();
-    fetchEvents();
+      setWorks([...workshops, ...events]);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const settings = {
     dots: true,
@@ -137,7 +133,7 @@ function WorksSection() {
     ]
   };
 
-  if (isEventLoading || isWorkshopLoading) return (<Loading />)
+  if (isLoading) return (<Loading />);
 
   return (
     <section id="work" className="bg-gradient-to-r from-teal-600 to-blue-700 py-12">
@@ -151,7 +147,7 @@ function WorksSection() {
             <div key={index} className="p-4">
               <Link to={work.type === 'event' ? `/event/${work.id}` : `/workshop/${work.id}`} className="block">
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl">
-                  <img src={work.image} alt={work.title} className="w-full h-64 object-cover" />
+                  <img src={work.image} alt={work.title} className="w-full h-64 object-cover" loading="lazy" />
                   <div className="p-4">
                     <h5 className="text-2xl font-bold text-gray-800">{work.title}</h5>
                     <p className="text-gray-700 mt-2">{work.description}</p>
@@ -166,4 +162,4 @@ function WorksSection() {
   );
 }
 
-export default WorksSection;
+export default React.memo(WorksSection);

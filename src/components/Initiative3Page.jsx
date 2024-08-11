@@ -51,8 +51,8 @@ const EngineeringKitchenPage = () => {
   }
 
   return (
-    <div className="bg-sky-100 min-h-screen">
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen relative">
+    <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
+      <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
         <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
           <div className="text-center text-white">
             <h1 className="text-6xl font-bold mb-4">Welcome to Engineering Kitchen</h1>

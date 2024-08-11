@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue, off } from "firebase/database";
 import dayjs from 'dayjs';
+import Loading from './LoadSaveAnimation/Loading';
 
 const NotificationList = () => {
   const [notifications, setNotifications] = useState([]);
@@ -30,7 +31,7 @@ const NotificationList = () => {
     return () => off(notificationsRef, 'value', unsubscribe);
   }, []);
 
-  if (isLoading) return <div className="text-center mt-10">Loading...</div>;
+  if (isLoading) return <Loading/>;
   if (error) return <div className="text-center text-red-500 mt-10">Error: {error}</div>;
 
   return (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue } from "firebase/database";
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 import Loading from './LoadSaveAnimation/Loading';
@@ -15,16 +16,44 @@ const DisplayContent = () => {
 
   useEffect(() => {
     const db = getDatabase();
+    const storage = getStorage();
     
     // Fetch Content
-    const fetchContent = (path, stateKey) => {
+    const fetchContent = async (path, stateKey) => {
       const contentRef = ref(db, path);
-      onValue(contentRef, (snapshot) => {
+      onValue(contentRef, async (snapshot) => {
         const data = snapshot.val();
-        setContent(prev => ({
-          ...prev,
-          [stateKey]: Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse()
-        }));
+        if (data) {
+          let loadedContent;
+          if (stateKey === 'galleryImages') {
+            loadedContent = await Promise.all(Object.keys(data || {}).map(async key => {
+              const item = data[key];
+              try {
+                const imageRef = storageRef(storage, item.imageUrl);
+                const url = await getDownloadURL(imageRef);
+                return { id: key, ...item, imageUrl: url };
+              } catch (err) {
+                console.error('Failed to get download URL', err);
+                return null; // Handle image loading error
+              }
+            }));
+            loadedContent = loadedContent.filter(item => item !== null); // Filter out any failed URLs
+          } else if (stateKey === 'videos') {
+            loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
+          } else {
+            loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
+          }
+          setContent(prev => ({
+            ...prev,
+            [stateKey]: loadedContent
+          }));
+        } else {
+          setContent(prev => ({
+            ...prev,
+            [stateKey]: []
+          }));
+        }
+        setIsLoading(false);
       });
     };
 
@@ -32,7 +61,9 @@ const DisplayContent = () => {
     fetchContent('videoContent', 'videos');
     fetchContent('articleContent', 'articles');
     
-    setIsLoading(false);
+    return () => {
+      // Cleanup if needed (not shown in this example)
+    };
   }, []);
 
   useEffect(() => {
@@ -50,10 +81,11 @@ const DisplayContent = () => {
     thumbnail: image.imageUrl,
     description: image.imageDetails,
     originalClass: "rounded-lg shadow-lg",
+    loading: "lazy", // Implement lazy loading for images
   });
 
   const renderVideo = (video, index) => (
-    <div key={`video-${video.id}-${index}`} className="p-4 border rounded-lg mb-4 bg-gradient-to-r from-teal-600 to-blue-700 shadow-lg">
+    <div key={`video-${video.id}-${index}`} className="p-4 border rounded-lg mb-4 bg-white shadow-lg transition duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
       <iframe
         title={`Video ${video.videoDetails}`}
         width="100%"
@@ -63,23 +95,23 @@ const DisplayContent = () => {
         allowFullScreen
         className="rounded-lg"
       ></iframe>
-      <p className="mt-2 text-center text-white font-semibold">{video.videoDetails}</p>
+      <p className="mt-2 text-center text-gray-800 font-semibold">{video.videoDetails}</p>
     </div>
   );
 
   const renderArticle = (article, index) => (
-    <div key={`article-${article.id}-${index}`} className="p-6 border rounded-lg mb-4 bg-gradient-to-r from-teal-600 to-blue-700 shadow-lg">
-      <a href={article.articleUrl} target="_blank" rel="noopener noreferrer" className="text-white hover:text-gray-300 transition-colors">
-        <h3 className="text-lg font-semibold text-white">{article.articleHeading}</h3>
-        <p className='italic text-sm text-white'>~ Prof. Dinesh Singh</p>
+    <div key={`article-${article.id}-${index}`} className="p-6 border rounded-lg mb-4 bg-white shadow-lg transition duration-300 transform hover:-translate-y-1 hover:shadow-2xl">
+      <a href={article.articleUrl} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:text-gray-600 transition-colors">
+        <h3 className="text-lg font-semibold">{article.articleHeading}</h3>
+        <p className='italic text-sm'>~ Prof. Dinesh Singh</p>
       </a>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-teal-600 to-blue-700">
-      <main className="container mx-auto py-8 rounded-md shadow-lg">
-        <h1 className="text-5xl font-bold mb-12 text-center text-white">Explore Our Content</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
+      <main className="container mx-auto py-12 px-6 rounded-md shadow-lg">
+        <h1 className="text-5xl font-bold mb-12 text-center text-indigo-900">Explore Our Content</h1>
         
         {categories.map((category, index) => {
           const images = content.galleryImages.filter(image => image.category === category).map(renderImage);
@@ -89,13 +121,13 @@ const DisplayContent = () => {
             <div key={`category-${category}-${index}`}>
               {images.length > 0 && (
                 <section className="my-12">
-                  <h2 className="text-4xl font-bold text-white mb-8 border-b-4 pb-4 border-white">{category} - Images</h2>
+                  <h2 className="text-4xl font-bold text-indigo-900 mb-8 border-b-4 pb-4 border-indigo-900">{category} - Images</h2>
                   <ImageGallery items={images} />
                 </section>
               )}
               {videos.length > 0 && (
                 <section className="my-12">
-                  <h2 className="text-4xl font-bold text-white mb-8 border-b-4 pb-4 border-white">{category} - Videos</h2>
+                  <h2 className="text-4xl font-bold text-indigo-900 mb-8 border-b-4 pb-4 border-indigo-900">{category} - Videos</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {videos.map(renderVideo)}
                   </div>
@@ -107,7 +139,7 @@ const DisplayContent = () => {
 
         {/* Articles Section */}
         <section className="my-12">
-          <h2 className="text-4xl font-bold text-white mb-8 border-b-4 pb-4 border-white">Informative Articles</h2>
+          <h2 className="text-4xl font-bold text-indigo-900 mb-8 border-b-4 pb-4 border-indigo-900">Informative Articles</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {content.articles.map(renderArticle)}
           </div>

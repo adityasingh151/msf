@@ -1,95 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { getDatabase, ref, get } from 'firebase/database';
+import Loading from '../LoadSaveAnimation/Loading';
 
-const coursesForStudents = [
-  {
-    title: 'Learn Math in a Fun and Easy Way using Computers',
-    description: 'This programme is designed for middle school students who wish to kickstart their learning and excel in their studies. Visualization helps here to understand what the problem is about. It will enhance student’s understanding and improve achievements as well as problem-solving skills. It will equip them with mathematical skills and help children to visualize mathematical concepts.',
-    imgSrc: 'https://lh3.googleusercontent.com/KXxQm9ACAeTFg7rANxYX32DWaHHIVuMAU0JEyLd1CYC7vWB6Y6g3VIJvte_kUPAs5D3FQL6NXg=w640-h400-e365',
-    link: '#',
-  },
-  {
-    title: 'Statistics and Probability for Class 9 & 10th',
-    description: 'Today’s 21st century world revolves around data. Understanding and interpreting data is, therefore, not just a chapter in the mathematics syllabus, but also a valuable skill in daily life. Learn the concepts of statistics and probability aligned with the syllabus of secondary education and their application in the real world.',
-    imgSrc: 'https://cdn0.iconfinder.com/data/icons/ikooni-outline-seo-web/128/seo2-83-2-256.png',
-    link: '#',
-  },
-  {
-    title: 'Statistics and Probability for Class 11 & 12th',
-    description: 'Today’s 21st century world revolves around data. Understanding and interpreting data is, therefore, not just a chapter in the mathematics syllabus, but also a valuable skill in daily life. Learn the concepts of statistics and probability aligned with the syllabus of senior secondary education and their application in the real world.',
-    imgSrc: 'https://cdn0.iconfinder.com/data/icons/ikooni-outline-seo-web/128/seo2-39-256.png',
-    link: '#',
-  },
-];
-
-const coursesForTeachers = [
-  {
-    title: 'Enriching Your Classroom with GeoGebra',
-    description: 'Learn how to use GeoGebra in our course for middle school math teachers with exploratory pedagogy. This course is designed to equip the participants with the basics of GeoGebra and the skill to create their own dynamic applets to use in their classrooms.',
-    imgSrc: 'https://wiki.geogebra.org/uploads/8/85/Download-icons-device-screen.png',
-    link: 'https://mathscifound.org/online-courses/school-teachers/',
-  },
-  {
-    title: 'Introduction to Useful Tools and Online Teaching Strategies',
-    description: 'Globally, education is shifting to the online platform. This course empowers teachers to learn, understand, and use tools to teach in an online environment, especially relevant due to the COVID-19 pandemic.',
-    imgSrc: 'https://cdn1.iconfinder.com/data/icons/online-education-58/200/education-teaching-Online_course-512.png',
-    link: 'https://mathscifound.org/online-courses/school-teachers/',
-  },
-  {
-    title: 'Practicals on Applied Mathematics Using Spreadsheets',
-    description: 'Learn practical applications of mathematics using spreadsheets. This course focuses on applying mathematical concepts through practical exercises, enhancing teaching methodologies with hands-on learning.',
-    imgSrc: 'https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: 'https://mathscifound.org/online-courses/school-teachers/',
-  },
-];
-
-const coursesForCollegeStudents = [
-  {
-    title: 'Getting Started with Data Analysis on MS Excel with Basic Statistics',
-    description: 'This learning programme is designed in such a way that participants can explore techniques of quantitative data analysis using Microsoft Excel. This introductory course enables the participants to make sense of data analytics using spreadsheets and derive valuable insights from available information.',
-    imgSrc: 'https://cdn2.iconfinder.com/data/icons/financial-vol-2/128/064-512.png',
-    link: 'https://mathscifound.org/online-courses/college-students/',
-  },
-  {
-    title: 'Essential Digital Skills for College Students',
-    description: 'This course will help the participants to acquire digital skills required in internet & technology-driven learning environments. Participants will learn methods and tools for conducting online research, developing websites using WordPress, and identifying credible information on the web. These skills have been coupled with the domain of academic inquiry through various projects and activities.',
-    imgSrc: 'https://cdn2.iconfinder.com/data/icons/pregnancy-8/512/56_reach_Touch_destination_digital_analytic_creative_skills_process-512.png',
-    link: 'https://mathscifound.org/online-courses/college-students/',
-  },
-  {
-    title: 'English Communication & Self Enhancement',
-    description: 'No matter what your goal, good communication is the key to success in life. But did you know that communicating well has little to do with mastering a language? It is much more than that—it is about finding your voice, having something to say, and saying it with conviction and clarity. This activity-based, interdisciplinary workshop is all things relevant, creative, and enjoyable, designed to help you become a good thinker, confident speaker, and an excellent communicator. The participants will be introduced to ways of thinking critically through creative, innovative, and engaging activities.',
-    imgSrc: 'https://cdn2.iconfinder.com/data/icons/unigrid-bluetone-human-vol-5/60/011_207_team_discussion_message_chat_forum_communication-512.png',
-    link: 'https://mathscifound.org/online-courses/college-students/',
-  },
-];
-
-const teachingMethods = [
-  {
-    title: 'Online/Webinar Based',
-    description: 'Utilizing modern webinar tools to deliver real-time teaching experiences that are both engaging and educational.',
-    imgSrc: 'https://images.pexels.com/photos/1595391/pexels-photo-1595391.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    title: 'Interdisciplinary Approach',
-    description: 'Incorporating multiple disciplines to provide a holistic learning experience that encourages critical thinking and creativity.',
-    imgSrc: 'https://images.pexels.com/photos/3017115/pexels-photo-3017115.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    title: 'Hands-on & Project Based Learning',
-    description: 'Engaging students in practical projects to apply theoretical knowledge and develop problem-solving skills.',
-    imgSrc: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    title: 'Discussion with Peer Group',
-    description: 'Facilitating peer discussions to enhance learning through collaboration, exchange of ideas, and feedback.',
-    imgSrc: 'https://images.pexels.com/photos/1325762/pexels-photo-1325762.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-];
-
-const CourseCard = ({ title, description, imgSrc, link }) => (
+// Memoized CourseCard to prevent unnecessary re-renders
+const CourseCard = React.memo(({ title, description, imgSrc, link }) => (
   <div className="w-full md:w-1/3 px-4 mb-8">
     <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white">
-      <img src={imgSrc} className="w-full h-48 object-cover" alt="Course Thumbnail" />
+      <img src={imgSrc} className="w-full h-48 object-cover" alt="Course Thumbnail" loading="lazy" />
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2 text-blue-800">{title}</h3>
         <p className="text-base text-gray-700 mb-4 h-40 overflow-hidden">{description}</p>
@@ -97,9 +14,44 @@ const CourseCard = ({ title, description, imgSrc, link }) => (
       </div>
     </div>
   </div>
-);
+));
 
-function CoursesPage() {
+const CoursesPage = () => {
+  const [coursesForStudents, setCoursesForStudents] = useState([]);
+  const [coursesForTeachers, setCoursesForTeachers] = useState([]);
+  const [coursesForCollegeStudents, setCoursesForCollegeStudents] = useState([]);
+  const [teachingMethods, setTeachingMethods] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchCoursesData = useCallback(async () => {
+    const db = getDatabase();
+    try {
+      const [studentsSnapshot, teachersSnapshot, collegeSnapshot, methodsSnapshot] = await Promise.all([
+        get(ref(db, 'courses/students')),
+        get(ref(db, 'courses/teachers')),
+        get(ref(db, 'courses/college')),
+        get(ref(db, 'courses/methods'))
+      ]);
+
+      setCoursesForStudents(studentsSnapshot.exists() ? Object.values(studentsSnapshot.val()) : []);
+      setCoursesForTeachers(teachersSnapshot.exists() ? Object.values(teachersSnapshot.val()) : []);
+      setCoursesForCollegeStudents(collegeSnapshot.exists() ? Object.values(collegeSnapshot.val()) : []);
+      setTeachingMethods(methodsSnapshot.exists() ? Object.values(methodsSnapshot.val()) : []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCoursesData();
+  }, [fetchCoursesData]);
+
+  if (isLoading) {
+    return <Loading/>;
+  }
+
   return (
     <div className="bg-coolGray-100">
       {/* Header Section */}
@@ -171,6 +123,6 @@ function CoursesPage() {
       </div>
     </div>
   );
-}
+};
 
 export default CoursesPage;

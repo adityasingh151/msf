@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import Loading from '../components/LoadSaveAnimation/Loading';
 import Notification from './Notification';
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
-const Initiative2Page = () => {
+const Initiative2Page = memo(() => {
   const [data, setData] = useState({ story: '', vision: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -13,37 +14,35 @@ const Initiative2Page = () => {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dataRef = ref(db, 'collegeOfStartups');
-        onValue(
-          dataRef,
-          (snapshot) => {
-            const value = snapshot.val();
-            if (value) {
-              setData({
-                story: value.story || 'Story not available',
-                vision: value.vision || 'Vision not available',
-              });
-            } else {
-              setData({ story: 'Story not available', vision: 'Vision not available' });
-            }
-            setLoading(false);
-          },
-          {
-            onlyOnce: true,
-          }
-        );
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data');
+  const fetchData = useCallback(() => {
+    const dataRef = ref(db, 'collegeOfStartups');
+    onValue(
+      dataRef,
+      (snapshot) => {
+        const value = snapshot.val();
+        if (value) {
+          setData({
+            story: value.story || 'Story not available',
+            vision: value.vision || 'Vision not available',
+          });
+        } else {
+          setData({ story: 'Story not available', vision: 'Vision not available' });
+        }
         setLoading(false);
+      },
+      {
+        onlyOnce: true,
       }
-    };
-
-    fetchData();
+    );
   }, [db]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleLearnMoreClick = useCallback(() => {
+    document.getElementById('story-section').scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   if (loading) {
     return <Loading />;
@@ -58,15 +57,15 @@ const Initiative2Page = () => {
   }
 
   return (
-    <div className="bg-sky-100 min-h-screen">
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen relative">
+    <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
+      <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
         <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
           <div className="text-center text-white">
             <h1 className="text-6xl font-bold mb-4">Welcome to College of Startups</h1>
             <p className="text-2xl mb-8">A place for innovation and growth</p>
             <button
               className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={() => document.getElementById('story-section').scrollIntoView({ behavior: 'smooth' })}
+              onClick={handleLearnMoreClick}
             >
               Learn More
             </button>
@@ -123,6 +122,6 @@ const Initiative2Page = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Initiative2Page;

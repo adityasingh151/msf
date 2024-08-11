@@ -1,7 +1,8 @@
 import React from 'react';
 import { AcademicCapIcon, LightBulbIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { memo } from 'react';
 
-const AboutSection = () => {
+const AboutSection = memo(() => {
   return (
     <section id="why" className="pt-12 pb-12 relative w-full bg-gradient-to-r from-cyan-50 to-blue-100">
       <div className="container mx-auto px-4">
@@ -45,6 +46,6 @@ const AboutSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default AboutSection;

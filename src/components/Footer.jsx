@@ -37,10 +37,18 @@ function Footer() {
               <img src="/msflogo.png" alt="Logo" className="sm:h-24 sm:w-24 h-12 w-12" />
             </Link>
             <div className="flex space-x-4">
-              <FaFacebook className="text-gray-200 hover:text-white" />
-              <FaTwitter className="text-gray-200 hover:text-white" />
-              <FaInstagram className="text-gray-200 hover:text-white" />
-              <FaLinkedin className="text-gray-200 hover:text-white" />
+            <a href="https://www.facebook.com/MathSciFound" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+              <FaFacebook />
+            </a>
+            <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+              <FaTwitter />
+            </a>
+            <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+              <FaInstagram />
+            </a>
+            <a href="https://www.linkedin.com/company/mathematical-sciences-foundation/people/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+              <FaLinkedin />
+            </a>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-auto lg:gap-60 w-full lg:w-auto ">

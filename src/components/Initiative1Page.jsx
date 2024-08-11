@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { txtdb } from '../components/databaseConfig/firebaseConfig';
 import Loading from '../components/LoadSaveAnimation/Loading';
@@ -8,6 +8,7 @@ const Initiative1Page = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [expandedSections, setExpandedSections] = useState([]);
 
   const sectionsRef = useRef({});
 
@@ -30,7 +31,6 @@ const Initiative1Page = () => {
           fetchedData[section] = value || '';
           fetchedCount++;
 
-          // When all sections have been fetched, update the state
           if (fetchedCount === sections.length) {
             setData(fetchedData);
             setLoading(false);
@@ -54,7 +54,7 @@ const Initiative1Page = () => {
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
 
     Object.values(sectionsRef.current).forEach((section) => {
@@ -71,6 +71,14 @@ const Initiative1Page = () => {
   const handleLearnMoreClick = () => {
     document.getElementById('aims-section').scrollIntoView({ behavior: 'smooth' });
   };
+
+  const toggleExpandSection = useCallback((section) => {
+    setExpandedSections((prevExpandedSections) =>
+      prevExpandedSections.includes(section)
+        ? prevExpandedSections.filter((s) => s !== section)
+        : [...prevExpandedSections, section]
+    );
+  }, []);
 
   if (loading) {
     return <Loading />;
@@ -100,34 +108,39 @@ const Initiative1Page = () => {
     need: 'The Need for an ‘Out of the Box’ Digital and Technology Based Learning Platform'
   };
 
-  const renderContent = (text) => {
+  const renderContent = (text, key) => {
     const lines = text.split('\n');
-    const elements = [];
+    const isExpanded = expandedSections.includes(key);
+    const visibleLines = isExpanded ? lines : lines.slice(0, 5);
 
-    lines.forEach((line, index) => {
+    const elements = visibleLines.map((line, index) => {
       if (line.startsWith('•') || line.startsWith('-')) {
-        elements.push(
-          <li key={index} className="list-disc pl-5">
-            {line.slice(1).trim()}
-          </li>
-        );
+        return <li key={index} className="list-disc pl-5">{line.slice(1).trim()}</li>;
       } else if (line.trim() === '') {
-        elements.push(<br key={index} />);
+        return <br key={index} />;
       } else {
-        elements.push(
-          <p key={index} className="mb-4">
-            {line}
-          </p>
-        );
+        return <p key={index} className="mb-4">{line}</p>;
       }
     });
 
-    return <>{elements}</>;
+    return (
+      <>
+        {elements}
+        {lines.length > 5 && (
+          <button
+            onClick={() => toggleExpandSection(key)}
+            className="text-blue-500 hover:underline"
+          >
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </>
+    );
   };
 
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-screen relative">
+      <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
         <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
           <div className="text-center text-white">
             <h1 className="text-6xl font-bold mb-4">Welcome to The Internet College</h1>
@@ -142,7 +155,7 @@ const Initiative1Page = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 lg:px-8 py-16 bg-gradient-to-b from-sky-100 to-white">
+      <div className="container mx-auto px-6 lg:px-8 py-4 bg-gradient-to-b from-sky-100 to-white">
         <h1 className="text-5xl font-extrabold text-center text-indigo-900 mb-12 tracking-wide">The Internet College</h1>
 
         {Object.keys(data).map((key, index) => (
@@ -150,14 +163,14 @@ const Initiative1Page = () => {
             key={key}
             ref={(el) => (sectionsRef.current[key] = el)}
             data-animation={`animate-${index % 2 === 0 ? 'slide-in' : 'fly-in'}`}
-            className="py-20 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12"
+            className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12"
           >
             <div className="container mx-auto px-8">
               <h2 className="text-3xl font-bold mb-4 text-center capitalize">
                 {sectionNames[key]}
               </h2>
               <div className="text-lg leading-relaxed mb-4 font-serif">
-                {renderContent(data[key])}
+                {renderContent(data[key], key)}
               </div>
             </div>
           </section>

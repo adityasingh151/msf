@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { getDatabase, ref, onValue, off } from "firebase/database";
 
 const Carousel = () => {
@@ -16,11 +17,21 @@ const Carousel = () => {
     const db = getDatabase();
     const imagesRef = ref(db, 'carouselImages');
     
-    const unsubscribe = onValue(imagesRef, (snapshot) => {
+    const unsubscribe = onValue(imagesRef, async (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const loadedImages = Object.values(data).map(item => item.imageUrl);
-        setImages(loadedImages);
+        const storage = getStorage();
+        const loadedImages = await Promise.all(Object.values(data).map(async item => {
+          try {
+            const imageRef = storageRef(storage, item.imageUrl);
+            const url = await getDownloadURL(imageRef);
+            return url;
+          } catch (err) {
+            console.error('Failed to get download URL', err);
+            return null; // Handle image loading error
+          }
+        }));
+        setImages(loadedImages.filter(url => url !== null)); // Filter out any failed URLs
       } else {
         setError("No images found");
       }
@@ -45,7 +56,7 @@ const Carousel = () => {
   }
 
   return (
-    <div className="mx-auto py-8 rounded-md bg-gradient-to-r from-teal-600 to-blue-700 shadow-lg">
+    <div className="mx-auto py-8 bg-gradient-to-r from-teal-600 to-blue-700 shadow-lg">
       {/* <h2 className="text-4xl font-bold text-center text-white mb-8">
         Discover Our Stunning Collection
       </h2> */}
@@ -74,7 +85,9 @@ const Carousel = () => {
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
+                height: '100%', // Ensure it takes up the full height
               }}
+              loading="lazy" // Add lazy loading attribute
             >
               <div className="absolute inset-0 bg-black bg-opacity-40 rounded-md"></div>
             </div>

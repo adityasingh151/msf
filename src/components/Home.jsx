@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from './Carousel';
-import AboutSection from './AboutSection';
 import SponsorsSection from './SponsorsSection'; // Fixed typo in the name
 import WorksSection from './WorksSection';
 import ContactArea from './ContactArea';
@@ -12,6 +11,7 @@ import SponsorsImageForm from './dashBoard/inputForms/SponsorsImageForm';
 import ReviewForm from './dashBoard/inputForms/ReviewForm';
 import ReviewsDisplay from './ReviewsDisplay';
 import HeaderPattern from './HeaderPattern';
+import BeautifulButton from './BeautifulButton';
 // import InternetCollege from './InternetCollege';
 
 function Home() {
@@ -35,11 +35,9 @@ function Home() {
     <>
     <HeaderPattern/>
       <Carousel />
-      {/* <AboutSection />
-      <SponsorsSection /> */}
       <WorksSection />
+      <BeautifulButton/>
       <ReviewsDisplay/>
-      {/* <InternetCollege/> */}
     </>
   );
 }

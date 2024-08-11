@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { getDatabase, ref, onValue } from "firebase/database";
 import Loading from './LoadSaveAnimation/Loading';
 
-function People() {
+const People = React.memo(() => {
     const [openSection, setOpenSection] = useState(null);
     const [hoveredMember, setHoveredMember] = useState(null);
     const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
 
-    useEffect(() => {
+    // Fetch data from Firebase
+    const fetchData = useCallback(() => {
         const db = getDatabase();
         const sectionsRef = ref(db, 'people');
 
         const unsubscribe = onValue(sectionsRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                // Create a structure that groups members by position
                 const positionGroups = {};
                 Object.keys(data).forEach(key => {
                     const member = data[key];
-                    const position = member.position || 'Unknown'; // Default group for unclassified positions
+                    const position = member.position || 'Unknown';
                     if (!positionGroups[position]) {
                         positionGroups[position] = {
                             title: position,
@@ -46,10 +47,46 @@ function People() {
         return () => unsubscribe();
     }, []);
 
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
     const toggleSection = (section) => {
-        const newOpenSection = openSection === section ? null : section;
-        setOpenSection(newOpenSection);
+        setOpenSection(prevOpenSection => (prevOpenSection === section ? null : section));
     };
+
+    const renderSectionContent = useCallback((section) => {
+        return section.members.map((member, idx) => (
+            <div key={idx} className="space-y-4 text-center relative">
+                {member.photoUrl && (
+                    <div
+                        onMouseEnter={() => setHoveredMember(member.name)}
+                        onMouseLeave={() => setHoveredMember(null)}
+                        className="relative"
+                    >
+                        <img
+                            className="w-fit h-fit mx-auto object-cover rounded-xl md:w-48 md:h-64 lg:w-64 lg:h-80"
+                            src={member.photoUrl}
+                            alt={member.name}
+                            loading="lazy"
+                        />
+                        {hoveredMember === member.name && (
+                            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded-xl p-4">
+                                <div className="text-white text-sm p-3 bg-gray-900 bg-opacity-80 rounded">
+                                    <p><strong>Position:</strong> {member.position}</p>
+                                    <p><strong>Details:</strong> {member.details}</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+                <div>
+                    <h4 className="text-2xl">{member.name}</h4>
+                    <span className="block text-sm text-gray-500">{member.designation}</span>
+                </div>
+            </div>
+        ));
+    }, [hoveredMember]);
 
     if (loading) {
         return <Loading />;
@@ -95,36 +132,7 @@ function People() {
                         </button>
                         {openSection === index && (
                             <div className="grid gap-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-6 bg-white rounded-b-lg">
-                                {section.members.map((member, idx) => (
-                                    <div key={idx} className="space-y-4 text-center relative">
-                                        {member.photoUrl && (
-                                            <div
-                                                onMouseEnter={() => setHoveredMember(member.name)}
-                                                onMouseLeave={() => setHoveredMember(null)}
-                                                className="relative"
-                                            >
-                                                <img
-                                                    className="w-fit h-fit mx-auto object-cover rounded-xl md:w-48 md:h-64 lg:w-64 lg:h-80"
-                                                    src={member.photoUrl}
-                                                    alt={member.name}
-                                                    loading="lazy"
-                                                />
-                                                {hoveredMember === member.name && (
-                                                    <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center rounded-xl p-4">
-                                                        <div className="text-white text-sm p-3 bg-gray-900 bg-opacity-80 rounded">
-                                                            <p><strong>Position:</strong> {member.position}</p>
-                                                            <p><strong>Details:</strong> {member.details}</p>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-                                        <div>
-                                            <h4 className="text-2xl">{member.name}</h4>
-                                            <span className="block text-sm text-gray-500">{member.designation}</span>
-                                        </div>
-                                    </div>
-                                ))}
+                                {renderSectionContent(section)}
                             </div>
                         )}
                     </div>
@@ -132,6 +140,6 @@ function People() {
             </div>
         </div>
     );
-}
+});
 
 export default People;

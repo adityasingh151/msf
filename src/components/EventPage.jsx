@@ -48,7 +48,7 @@ const EventPage = () => {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.1 }
     );
   
     Object.values(sectionRefs).forEach((ref) => {
