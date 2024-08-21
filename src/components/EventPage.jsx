@@ -38,30 +38,6 @@ const EventPage = () => {
     });
   }, [eventId]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(entry.target.dataset.animation);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-  
-    Object.values(sectionRefs).forEach((ref) => {
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-    });
-  
-    return () => {
-      observer.disconnect();
-    };
-  }, [eventData]);
-
   if (!eventData) {
     return <Loading/>;
   }

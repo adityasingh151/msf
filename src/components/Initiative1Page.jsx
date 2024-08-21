@@ -45,29 +45,6 @@ const Initiative1Page = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(entry.target.dataset.animation);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    Object.values(sectionsRef.current).forEach((section) => {
-      if (section) observer.observe(section);
-    });
-
-    return () => {
-      Object.values(sectionsRef.current).forEach((section) => {
-        if (section) observer.unobserve(section);
-      });
-    };
-  }, [data]);
-
   const handleLearnMoreClick = () => {
     document.getElementById('aims-section').scrollIntoView({ behavior: 'smooth' });
   };
@@ -155,14 +132,13 @@ const Initiative1Page = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 lg:px-8 py-4 bg-gradient-to-b from-sky-100 to-white">
+      <div id='aims-section' className="container mx-auto px-6 lg:px-8 py-4 bg-gradient-to-b from-sky-100 to-white">
         <h1 className="text-5xl font-extrabold text-center text-indigo-900 mb-12 tracking-wide">The Internet College</h1>
 
-        {Object.keys(data).map((key, index) => (
+        {Object.keys(data).map((key) => (
           <section
             key={key}
             ref={(el) => (sectionsRef.current[key] = el)}
-            data-animation={`animate-${index % 2 === 0 ? 'slide-in' : 'fly-in'}`}
             className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12"
           >
             <div className="container mx-auto px-8">

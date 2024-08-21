@@ -24,6 +24,12 @@ const DashboardCard = () => {
             Add Students Courses
           </div>
           <div 
+            onClick={() => handleNavigation('/admin/forms/research')}
+            className="card cursor-pointer bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-blue-600"
+          >
+            Add Research Paper
+          </div>
+          <div 
             onClick={() => handleNavigation('/admin/forms/course2')}
             className="card cursor-pointer bg-gradient-to-r from-pink-500 to-pink-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-pink-600"
           >
@@ -174,6 +180,12 @@ const DashboardCard = () => {
             className="card cursor-pointer bg-gradient-to-r from-amber-500 to-amber-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-amber-600"
           >
             View Engineering Kitchen
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/view/research')}
+            className="card cursor-pointer bg-gradient-to-r from-red-500 to-red-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-red-600"
+          >
+            View Research Papers
           </div>
         </div>
       </div>

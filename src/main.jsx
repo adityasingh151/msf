@@ -28,6 +28,7 @@ import NotFoundPage from "./components/NotFoundPage";
 import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/LoadSaveAnimation/Loading";
+import ResearchDisplay from "./components/ResearchDisplay";
 const AdminLayout = lazy(() => import("./components/AdminLayout"));
 const DashboardCard = lazy(() => import("./components/DashboardCard"));
 const CourseForm1 = lazy(() =>
@@ -108,6 +109,12 @@ const Initiative1Form = lazy(() =>
 const Initiative3Form = lazy(() =>
   import("./components/dashBoard/inputForms/Initiative3Form")
 );
+const ResearchForm = lazy(() => 
+  import("./components/dashBoard/inputForms/ResearchForm")
+);
+const ResearchManagement = lazy(() => 
+  import("./components/dashBoard/viewComponents/ResearchManagement")
+);
 
 const router = createBrowserRouter([
   {
@@ -128,6 +135,7 @@ const router = createBrowserRouter([
           { path: "courses", element: <CoursesPage /> },
           { path: "about/team", element: <People /> },
           { path: "about/story", element: <MathematicalSciencesFoundation /> },
+          { path: "about/research", element: <ResearchDisplay /> },
           { path: "courses/students", element: <CoursePage2 /> },
           { path: "courses/teachers", element: <CoursePage1 /> },
           { path: "workshop/:workshopId", element: <WorkshopPage /> },
@@ -169,6 +177,22 @@ const router = createBrowserRouter([
                 element: (
                   <Suspense fallback={<Loading />}>
                     <DashboardCard />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "forms/research",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ResearchForm />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "view/research",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ResearchManagement />
                   </Suspense>
                 ),
               },
@@ -312,7 +336,7 @@ const router = createBrowserRouter([
                 path: "forms/notification",
                 element: (
                   <Suspense fallback={<Loading />}>
-                    <NotificationForm onSave={() => {}} />
+                    <NotificationForm onSave={() => { }} />
                   </Suspense>
                 ),
               },

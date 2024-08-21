@@ -53,21 +53,21 @@ const CoursesPage = () => {
   }
 
   return (
-    <div className="bg-coolGray-100">
+    <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
       {/* Header Section */}
-      <div className="bg-[url('https://images.pexels.com/photos/158163/clouds-cloudporn-weather-lookup-158163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')] bg-cover bg-top-right py-4 px-4 text-white">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center">
-          <div className="w-full md:w-1/2">
-            <h1 className="text-6xl font-serif mb-4">Online Hands-on Courses for Teachers and Students</h1>
-            <p className="text-xl">We at MSF have created a variety of online courses specially designed for the community of teachers, school students & college students. These skill-based courses will enable you to excel in your arena and enhance your understanding with the help of technology.</p>
+      <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
+        <div className="flex items-center justify-center h-full bg-black bg-opacity-50">
+          <div className="text-center text-white px-4">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">Online Hands-on Courses for Teachers and Students</h1>
+            <p className="text-lg md:text-xl lg:text-2xl mb-8">We at MSF have created a variety of online courses specially designed for the community of teachers, school students & college students. These skill-based courses will enable you to excel in your arena and enhance your understanding with the help of technology.</p>
           </div>
         </div>
       </div>
 
       {/* Our Course Offerings */}
-      <div className="py-12 bg-gray-50">
+      <div className="py-12 bg-gradient-to-b from-sky-100 to-white">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-5xl font-serif text-center mb-12 text-blue-600">Our Course Offerings</h2>
+          <h2 className="text-5xl font-extrabold text-center text-indigo-900 mb-12">Our Course Offerings</h2>
           <div className="flex flex-wrap -mx-4">
             {coursesForStudents.map((course, index) => (
               <CourseCard key={index} {...course} />
@@ -77,9 +77,9 @@ const CoursesPage = () => {
       </div>
 
       {/* For School Teachers */}
-      <div className="py-12 bg-gray-100">
+      <div className="py-12 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-5xl font-serif mb-12 text-blue-600">For School Teachers</h2>
+          <h2 className="text-5xl font-extrabold text-indigo-900 mb-12">For School Teachers</h2>
           <div className="flex flex-wrap -mx-4">
             {coursesForTeachers.map((course, index) => (
               <CourseCard key={index} {...course} />
@@ -89,9 +89,9 @@ const CoursesPage = () => {
       </div>
 
       {/* For College Students or Budding Professionals */}
-      <div className="py-12 bg-gray-50">
+      <div className="py-12 bg-gradient-to-b from-sky-100 to-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-5xl font-serif mb-12 text-blue-600">For College Students or Budding Professionals</h2>
+          <h2 className="text-5xl font-extrabold text-indigo-900 mb-12">For College Students or Budding Professionals</h2>
           <div className="flex flex-wrap -mx-4">
             {coursesForCollegeStudents.map((course, index) => (
               <CourseCard key={index} {...course} />
@@ -101,9 +101,9 @@ const CoursesPage = () => {
       </div>
 
       {/* Teaching and Learning Method Section */}
-      <div className="py-12 bg-gray-100">
+      <div className="py-12 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-5xl font-serif mb-12 text-blue-600">Teaching and Learning Method</h2>
+          <h2 className="text-5xl font-extrabold text-indigo-900 mb-12">Teaching and Learning Method</h2>
           <div className="flex flex-wrap -mx-4">
             {teachingMethods.map((method, index) => (
               <CourseCard key={index} {...method} />
@@ -113,9 +113,9 @@ const CoursesPage = () => {
       </div>
 
       {/* Footer Section */}
-      <div className="py-20 bg-white text-center">
-        <h2 className="text-5xl font-serif mb-4 text-blue-600">Register for a Course Today!</h2>
-        <p className="text-xl text-gray-700">Stay safe at home and use this time to hone your skills and enhance your knowledge base.</p>
+      <div className="py-20 bg-gradient-to-b from-sky-100 to-white text-center">
+        <h2 className="text-5xl font-extrabold text-indigo-900 mb-4">Register for a Course Today!</h2>
+        <p className="text-xl text-gray-700 mb-8">Stay safe at home and use this time to hone your skills and enhance your knowledge base.</p>
         <div className="mt-4">
           <a href="#" className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full mr-4">Join Now</a>
           <a href="#" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full">Learn More</a>

@@ -67,52 +67,30 @@ const EngineeringKitchenPage = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 lg:px-8 py-16 bg-gradient-to-b from-sky-100 to-white">
-        <motion.h1
-          className="text-5xl font-extrabold text-center text-indigo-900 mb-12 tracking-wide"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Engineering Kitchen
-        </motion.h1>
+      <div id="purpose-section" className="container mx-auto px-6 lg:px-8 py-4 bg-gradient-to-b from-sky-100 to-white">
+        <h1 className="text-5xl font-extrabold text-center text-indigo-900 mb-12 tracking-wide">Engineering Kitchen</h1>
 
-        <motion.section
-          id="purpose-section"
-          className="mb-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="bg-white shadow-2xl rounded-lg p-10 mb-8 transition-transform transform hover:-translate-y-1 hover:shadow-3xl">
-            <h2 className="text-4xl font-semibold text-gray-800 mb-4 border-b-4 border-gray-300 pb-2">
-              Our Vision and Purpose
-            </h2>
-            <p className="text-lg text-gray-700 leading-relaxed font-serif whitespace-pre-line">
+        <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
+          <div className="container mx-auto px-8">
+            <h2 className="text-3xl font-bold mb-4 text-center capitalize">Our Vision and Purpose</h2>
+            <div className="text-lg leading-relaxed mb-4 font-serif">
               {purpose.split('\n').map((line, index) => (
                 <span key={index}>{line}<br /></span>
               ))}
-            </p>
+            </div>
           </div>
-        </motion.section>
+        </section>
 
-        <motion.section
-          className="mb-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="bg-white shadow-2xl rounded-lg p-10 transition-transform transform hover:-translate-y-1 hover:shadow-3xl">
-            <h2 className="text-4xl font-semibold text-gray-800 mb-4 border-b-4 border-gray-300 pb-2">
-              About Engineering Kitchen
-            </h2>
-            <p className="text-lg text-gray-700 leading-relaxed font-serif whitespace-pre-line">
+        <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
+          <div className="container mx-auto px-8">
+            <h2 className="text-3xl font-bold mb-4 text-center capitalize">About Engineering Kitchen</h2>
+            <div className="text-lg leading-relaxed mb-4 font-serif">
               {about.split('\n').map((line, index) => (
                 <span key={index}>{line}<br /></span>
               ))}
-            </p>
+            </div>
           </div>
-        </motion.section>
+        </section>
       </div>
     </div>
   );

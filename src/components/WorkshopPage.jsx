@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, lazy, Suspense } from 'react';
+import React, { useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { getDatabase, ref, get } from 'firebase/database';
 import { useParams } from 'react-router-dom';
 import Loading from './LoadSaveAnimation/Loading';
@@ -36,42 +36,8 @@ const WorkshopPage = () => {
     fetchWorkshopData();
   }, [workshopId]);
 
-  const sectionRefs = useRef({
-    header: null,
-    about: null,
-    schedule: null,
-    outcomes: null,
-    quote: null,
-    registration: null,
-    directions: null,
-  });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(entry.target.dataset.animation);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    Object.values(sectionRefs.current).forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => {
-      Object.values(sectionRefs.current).forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
-    };
-  }, [workshopData]);
-
   const handleButtonClick = useCallback(() => {
-    if (workshopData.registrationLink) {
+    if (workshopData?.registrationLink) {
       window.location.href = workshopData.registrationLink;
     }
   }, [workshopData]);
@@ -83,43 +49,34 @@ const WorkshopPage = () => {
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100">
       <Suspense fallback={<Loading />}>
-        {workshopData.headerTitle && 
+        {workshopData?.headerTitle && 
           <HeaderSection
-            ref={(el) => (sectionRefs.current.header = el)}
             title={workshopData.headerTitle}
             subtitle={workshopData.headerSubtitle}
             buttonText="Register Now"
             onButtonClick={handleButtonClick}
-            data-animation="animate-slide-in"
           />
         }
-        {workshopData.aboutDescription &&
+        {workshopData?.aboutDescription &&
           <AboutSection
-            ref={(el) => (sectionRefs.current.about = el)}
             title={workshopData.aboutTitle}
             content={workshopData.aboutDescription}
             imageUrl={workshopData.aboutImage}
-            data-animation="animate-fade-in"
           />
         }
-        {workshopData.outcomeContent && 
+        {workshopData?.outcomeContent && 
           <OutcomesSection
-            ref={(el) => (sectionRefs.current.outcomes = el)}
             title={workshopData.outcomeTitle}
             content={workshopData.outcomeContent}
-            data-animation="animate-slide-up"
           />
         }
-        {workshopData.quote && 
+        {workshopData?.quote && 
           <QuoteSection
-            ref={(el) => (sectionRefs.current.quote = el)}
             quote={workshopData.quote}
-            data-animation="animate-fade-in"
           />
         }
-        {workshopData.workshopDate && 
+        {workshopData?.workshopDate && 
           <RegistrationSection
-            ref={(el) => (sectionRefs.current.registration = el)}
             title="Register for the Workshop"
             details={[
               { label: 'Date', value: workshopData.workshopDate },
@@ -131,14 +88,11 @@ const WorkshopPage = () => {
             registrationInfo={workshopData.registrationInfo}
             buttonText="Register Now"
             onButtonClick={handleButtonClick}
-            data-animation="animate-slide-up"
           />
         }
-        {workshopData.address && 
+        {workshopData?.address && 
           <HowToReach
-            ref={(el) => (sectionRefs.current.directions = el)}
             location={{ name: workshopData.address, embedParams: workshopData.addressURL }}
-            data-animation="animate-fade-in"
           />
         }
       </Suspense>
