@@ -19,60 +19,60 @@ const DisplayContent = () => {
     const storage = getStorage();
 
     // Fetch Content
-  // Fetch Content
-  const fetchContent = async (path, stateKey) => {
-    const contentRef = ref(db, path);
-    onValue(contentRef, async (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        let loadedContent;
+    // Fetch Content
+    const fetchContent = async (path, stateKey) => {
+      const contentRef = ref(db, path);
+      onValue(contentRef, async (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          let loadedContent;
 
-        if (stateKey === 'galleryImages') {
-          loadedContent = await Promise.all(
-            Object.keys(data || {}).map(async key => {
-              const item = data[key];
+          if (stateKey === 'galleryImages') {
+            loadedContent = await Promise.all(
+              Object.keys(data || {}).map(async key => {
+                const item = data[key];
 
-              // Ensure imageUrls is an array before proceeding
-              if (item.imageUrls && Array.isArray(item.imageUrls)) {
-                try {
-                  // Fetch URLs for each image in the imageUrls array
-                  const imageUrls = await Promise.all(
-                    item.imageUrls.map(async imageUrl => {
-                      const imageRef = storageRef(storage, imageUrl);
-                      return await getDownloadURL(imageRef);
-                    })
-                  );
-                  return { id: key, ...item, imageUrls };
-                } catch (err) {
-                  console.error('Failed to get download URLs', err);
-                  return null; // Handle image loading error
+                // Ensure imageUrls is an array before proceeding
+                if (item.imageUrls && Array.isArray(item.imageUrls)) {
+                  try {
+                    // Fetch URLs for each image in the imageUrls array
+                    const imageUrls = await Promise.all(
+                      item.imageUrls.map(async imageUrl => {
+                        const imageRef = storageRef(storage, imageUrl);
+                        return await getDownloadURL(imageRef);
+                      })
+                    );
+                    return { id: key, ...item, imageUrls };
+                  } catch (err) {
+                    console.error('Failed to get download URLs', err);
+                    return null; // Handle image loading error
+                  }
+                } else {
+                  console.warn(`Invalid or missing imageUrls for item with ID ${key}`);
+                  return null; // Skip items without valid imageUrls
                 }
-              } else {
-                console.warn(`Invalid or missing imageUrls for item with ID ${key}`);
-                return null; // Skip items without valid imageUrls
-              }
-            })
-          );
-          loadedContent = loadedContent.filter(item => item !== null); // Filter out any failed or invalid items
-        } else if (stateKey === 'videos') {
-          loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
-        } else {
-          loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
-        }
+              })
+            );
+            loadedContent = loadedContent.filter(item => item !== null); // Filter out any failed or invalid items
+          } else if (stateKey === 'videos') {
+            loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
+          } else {
+            loadedContent = Object.keys(data || {}).map(key => ({ id: key, ...data[key] })).reverse();
+          }
 
-        setContent(prev => ({
-          ...prev,
-          [stateKey]: loadedContent
-        }));
-      } else {
-        setContent(prev => ({
-          ...prev,
-          [stateKey]: []
-        }));
-      }
-      setIsLoading(false);
-    });
-  };
+          setContent(prev => ({
+            ...prev,
+            [stateKey]: loadedContent
+          }));
+        } else {
+          setContent(prev => ({
+            ...prev,
+            [stateKey]: []
+          }));
+        }
+        setIsLoading(false);
+      });
+    };
 
 
     fetchContent('imageContent', 'galleryImages');
@@ -132,7 +132,7 @@ const DisplayContent = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200">
       <main className="container mx-auto py-12 px-6 rounded-md shadow-lg">
         <h1 className="text-5xl font-bold mb-12 text-center text-indigo-900">Explore Our Content</h1>
-        
+
         {categories.map((category, index) => {
           const images = content.galleryImages.filter(image => image.category === category).flatMap(renderImage);
           const videos = content.videos.filter(video => video.category === category);
@@ -147,9 +147,9 @@ const DisplayContent = () => {
               )}
               {videos.length > 0 && (
                 <section className="my-12">
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-indigo-900 mb-4 sm:mb-6 md:mb-8 border-b-4 pb-2 sm:pb-3 md:pb-4 border-indigo-900">
-  {category} - Videos
-</h2>
+                  <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-indigo-900 mb-2 xs:mb-3 sm:mb-4 md:mb-6 lg:mb-8 border-b-2 xs:border-b-3 sm:border-b-4 pb-1 xs:pb-2 sm:pb-3 md:pb-4 border-indigo-900">
+                    {category} - Videos
+                  </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {videos.map(renderVideo)}
                   </div>

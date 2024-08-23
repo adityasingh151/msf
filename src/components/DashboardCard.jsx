@@ -24,12 +24,6 @@ const DashboardCard = () => {
             Add Students Courses
           </div>
           <div 
-            onClick={() => handleNavigation('/admin/forms/research')}
-            className="card cursor-pointer bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-blue-600"
-          >
-            Add Research Paper
-          </div>
-          <div 
             onClick={() => handleNavigation('/admin/forms/course2')}
             className="card cursor-pointer bg-gradient-to-r from-pink-500 to-pink-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-pink-600"
           >
@@ -88,6 +82,24 @@ const DashboardCard = () => {
             className="card cursor-pointer bg-gradient-to-r from-purple-500 to-purple-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-purple-600"
           >
             Add Testimonials
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/forms/research')}
+            className="card cursor-pointer bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-blue-600"
+          >
+            Add Research Paper
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/forms/conference')}
+            className="card cursor-pointer bg-gradient-to-r from-purple-500 to-purple-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-purple-600"
+          >
+            Add Conference
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/forms/book')}
+            className="card cursor-pointer bg-gradient-to-r from-red-500 to-red-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-red-600"
+          >
+            Add Book
           </div>
          
         </div>
@@ -186,6 +198,18 @@ const DashboardCard = () => {
             className="card cursor-pointer bg-gradient-to-r from-red-500 to-red-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-red-600"
           >
             View Research Papers
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/view/conferences')}
+            className="card cursor-pointer bg-gradient-to-r from-green-500 to-green-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-green-600"
+          >
+            View Conferences
+          </div>
+          <div 
+            onClick={() => handleNavigation('/admin/view/books')}
+            className="card cursor-pointer bg-gradient-to-r from-orange-500 to-orange-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-orange-600"
+          >
+            View Books
           </div>
         </div>
       </div>

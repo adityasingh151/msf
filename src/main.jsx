@@ -29,6 +29,7 @@ import AdminLogin from "./components/AdminLogin";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/LoadSaveAnimation/Loading";
 import ResearchDisplay from "./components/ResearchDisplay";
+import LibraryDisplay from "./components/LibraryDisplay";
 const AdminLayout = lazy(() => import("./components/AdminLayout"));
 const DashboardCard = lazy(() => import("./components/DashboardCard"));
 const CourseForm1 = lazy(() =>
@@ -115,6 +116,20 @@ const ResearchForm = lazy(() =>
 const ResearchManagement = lazy(() => 
   import("./components/dashBoard/viewComponents/ResearchManagement")
 );
+const ConferenceForm = lazy(()=>
+  import("./components/dashBoard/inputForms/ConferenceForm")
+);
+const ConferenceManagement = lazy(()=>
+  import("./components/dashBoard/viewComponents/ConferenceManagement")
+);
+const BookForm = lazy(()=>
+  import("./components/dashBoard/inputForms/BookForm")
+);
+const BookManagement = lazy(()=>
+  import("./components/dashBoard/viewComponents/BookManagement")
+);
+
+
 
 const router = createBrowserRouter([
   {
@@ -135,7 +150,7 @@ const router = createBrowserRouter([
           { path: "courses", element: <CoursesPage /> },
           { path: "about/team", element: <People /> },
           { path: "about/story", element: <MathematicalSciencesFoundation /> },
-          { path: "about/research", element: <ResearchDisplay /> },
+          { path: "about/library", element: <LibraryDisplay /> },
           { path: "courses/students", element: <CoursePage2 /> },
           { path: "courses/teachers", element: <CoursePage1 /> },
           { path: "workshop/:workshopId", element: <WorkshopPage /> },
@@ -193,6 +208,48 @@ const router = createBrowserRouter([
                 element: (
                   <Suspense fallback={<Loading />}>
                     <ResearchManagement />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "forms/conference",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ConferenceForm />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "view/conferences",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ConferenceManagement />
+                  </Suspense>
+                ),
+              },
+              // Book Routes
+              {
+                path: "forms/book",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <BookForm />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "view/books",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <BookManagement />
+                  </Suspense>
+                ),
+              },
+              // Library Routes
+              {
+                path: "library",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <LibraryDisplay />
                   </Suspense>
                 ),
               },
