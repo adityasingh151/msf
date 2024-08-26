@@ -99,7 +99,7 @@ const Blurb = ({ title, icon, text }) => {
 const Button = ({ text }) => {
   return (
     <div className="text-center mt-8">
-      <button className="bg-red-500 hover:bg-red-600 text-white rounded-full py-3 px-8 text-lg font-semibold tracking-wide transition duration-300">{text}</button>
+      <button className="bg-red-500 cursor-default text-white rounded-full py-3 px-8 text-lg font-semibold tracking-wide transition duration-300">{text}</button>
     </div>
   );
 };
