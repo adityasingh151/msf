@@ -55,7 +55,7 @@ const Navbar = () => {
       dropdown: [
         { name: "Our Team", path: "/about/team" },
         { name: "Our Story", path: "/about/story" },
-        { name: "Library", path: "/about/library" }, // Added link to Research Papers
+        { name: "Publications", path: "/about/library" }, // Added link to Research Papers
       ],
     },
     {
