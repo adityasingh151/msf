@@ -2,14 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const MathematicalSciencesFoundation = () => {
-  const sectionRefs = {
-    first: useRef(null),
-    second: useRef(null),
-    third: useRef(null),
-    fourth: useRef(null),
-    fifth: useRef(null),
-    sixth: useRef(null),
-  };
+
 
   const navigate = useNavigate();
 
@@ -28,32 +21,6 @@ const MathematicalSciencesFoundation = () => {
     document.getElementById('our-story').scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add(entry.target.dataset.animation);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    Object.values(sectionRefs).forEach((ref) => {
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-    });
-
-    return () => {
-      Object.values(sectionRefs).forEach((ref) => {
-        if (ref.current) {
-          observer.unobserve(ref.current);
-        }
-      });
-    };
-  }, []);
 
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100">
@@ -74,7 +41,7 @@ const MathematicalSciencesFoundation = () => {
         </div>
       </section>
 
-      <section id='our-story' ref={sectionRefs.second} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <section id='our-story' className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 p-4">
@@ -90,7 +57,7 @@ const MathematicalSciencesFoundation = () => {
         </div>
       </section>
 
-      <section ref={sectionRefs.third} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 p-4">
@@ -109,7 +76,7 @@ const MathematicalSciencesFoundation = () => {
         </div>
       </section>
 
-      <section ref={sectionRefs.fourth} data-animation="animate-slide-in" className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
+      <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/2 p-4">
