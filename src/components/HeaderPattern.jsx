@@ -18,7 +18,7 @@ const HeaderPattern = () => {
           </p>
           <h1
             ref={textRef}
-            className="text-white text-5xl font-extrabold mt-0 animate-fly-in"
+            className="text-white text-3xl sm:text-5xl font-extrabold mt-0 animate-fly-in"
           >
             Mathematical Sciences Foundation
           </h1>
