@@ -31,7 +31,7 @@ const ConferenceDisplay = () => {
         <h2 className="text-5xl font-extrabold text-center text-indigo-900 mb-12 tracking-wide">
           International Research Conferences
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1">
           {conferences.map(conference => (
             <div key={conference.id} className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
               <div>

@@ -3,11 +3,12 @@ import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from 'fir
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './store/authSlice';
+import Notification from './Notification'; // Import Notification component
 
 function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [notification, setNotification] = useState({ message: '', type: '' }); // State for notification
   const navigate = useNavigate();
   const auth = getAuth();
   const dispatch = useDispatch();
@@ -19,43 +20,36 @@ function AdminLogin() {
     }
   }, [isAuthenticated, navigate]);
 
-  console.log("AdminLogin component rendered");
-
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log("Attempting login with email:", email);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log("Login successful, user:", user);
       dispatch(setUser({ uid: user.uid, email: user.email }));
-      navigate('/admin/dashboard'); // Assuming there's a dashboard route for logged-in admins
+      navigate('/admin/dashboard');
     } catch (error) {
-      console.error("Failed to login:", error);
-      setError("Failed to login: " + error.message);
+      setNotification({ message: "Failed to login: " + error.message, type: 'error' });
     }
   };
 
   const handleResetPassword = async () => {
     if (!email) {
-      setError("Please enter your email address to reset the password.");
+      setNotification({ message: "Please enter your email address to reset the password.", type: 'error' });
       return;
     }
-    console.log("Attempting to send password reset email to:", email);
     try {
       await sendPasswordResetEmail(auth, email);
-      alert('Password reset email sent!');
+      setNotification({ message: 'Password reset email sent!', type: 'success' });
     } catch (error) {
-      console.error("Failed to send reset email:", error);
-      setError("Failed to send reset email: " + error.message);
+      setNotification({ message: "Failed to send reset email: " + error.message, type: 'error' });
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center px-4">
+      {notification.message && <Notification message={notification.message} type={notification.type} onClose={() => setNotification({ message: '', type: '' })} />}
       <div className="max-w-md w-full bg-white p-8 border border-gray-300 rounded-lg shadow-xl transform transition duration-500 hover:scale-105">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">Admin Login</h2>
-        {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>

@@ -57,34 +57,6 @@ const Initiative1Page = () => {
     );
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Notification message={error} type="error" onClose={() => setError('')} />
-      </div>
-    );
-  }
-
-  const sectionNames = {
-    introduction: 'Introduction',
-    aims: 'Aims',
-    philosophy: 'Philosophy',
-    offerings: 'Offerings',
-    vision: 'Vision Statement',
-    mission: 'Mission Statement',
-    philosophyPractice: 'Philosophy and Practice',
-    outcomes: 'Outcomes of the Philosophy',
-    crisis: 'Crisis Facing Education',
-    essentialFeatures: 'Essential Features of the Internet College',
-    problems: 'Why Do We Have These Problems?',
-    advancedNations: 'Is The Situation In The Advanced Nations Of The World Much Different?',
-    need: 'The Need for an ‘Out of the Box’ Digital and Technology Based Learning Platform'
-  };
-
   const renderContent = (text, key) => {
     const lines = text.split('\n');
     const isExpanded = expandedSections.includes(key);
@@ -113,6 +85,34 @@ const Initiative1Page = () => {
         )}
       </>
     );
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Notification message={error} type="error" onClose={() => setError('')} />
+      </div>
+    );
+  }
+
+  const sectionNames = {
+    introduction: 'Introduction',
+    aims: 'Aims',
+    philosophy: 'Philosophy',
+    offerings: 'Offerings',
+    vision: 'Vision Statement',
+    mission: 'Mission Statement',
+    philosophyPractice: 'Philosophy and Practice',
+    outcomes: 'Outcomes of the Philosophy',
+    crisis: 'Crisis Facing Education',
+    essentialFeatures: 'Essential Features of the Internet College',
+    problems: 'Why Do We Have These Problems?',
+    advancedNations: 'Is The Situation In The Advanced Nations Of The World Much Different?',
+    need: 'The Need for an ‘Out of the Box’ Digital and Technology Based Learning Platform'
   };
 
   return (

@@ -62,7 +62,7 @@ const ViewCoursePage2 = () => {
     setNotification({ message: '', type: '' });
   };
 
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -71,7 +71,7 @@ const ViewCoursePage2 = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {courses.map((course) => (
           <div key={course.id} className="bg-white shadow rounded overflow-hidden">
-            <img src={course.imageUrl} alt={course.courseName} className="w-full h-48 object-cover"/>
+            <img src={course.imageUrl} alt={course.courseName} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="font-bold text-lg">{course.courseName}</h3>
               <p className="text-gray-600 text-sm mb-4">{course.description}</p>
@@ -79,10 +79,10 @@ const ViewCoursePage2 = () => {
               <p className="font-semibold">Webinars: {course.webinars}</p>
               <div className="flex justify-between items-center mt-4">
                 <button onClick={() => handleEdit(course)} className="text-blue-500 hover:text-blue-700 flex items-center">
-                  <BsPencilSquare className="mr-2"/>Edit
+                  <BsPencilSquare className="mr-2" />Edit
                 </button>
                 <button onClick={() => handleDelete(course)} className="text-red-500 hover:text-red-700 flex items-center">
-                  <BsTrash className="mr-2"/>Delete
+                  <BsTrash className="mr-2" />Delete
                 </button>
               </div>
             </div>

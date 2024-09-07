@@ -7,24 +7,14 @@ function ContactArea() {
         <div className="text-center">
           <h5 className="text-indigo-600 uppercase font-semibold">Contact</h5>
           <h4 className="text-3xl font-bold text-gray-800">Get In Touch</h4>
-          <p className="text-gray-600 mt-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.</p>
+          <p className="text-gray-600 mt-4">For any inquiries or further information, please feel free to reach out to us. We're here to help and look forward to connecting with you. Your questions and feedback are important to us, and we strive to provide prompt and helpful responses.</p>
         </div>
 
-        <form id="contact-form" action="assets/php/contact.php" method="POST" className="space-y-6 mt-6">
-          <div className="flex flex-wrap justify-between gap-4">
-            <input type="text" name="name" id="name" placeholder="Name" 
-              className="w-full md:w-1/2 px-6 py-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-red-500 focus:border-red-500 shadow-sm transition ease-in-out duration-150" />
-            <input type="email" name="email" id="email" placeholder="Email"
-              className="w-full md:w-1/2 px-6 py-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-red-500 focus:border-red-500 shadow-sm transition ease-in-out duration-150" />
-          </div>
-          <textarea name="message" id="message" placeholder="Message" rows="5"
-            className="w-full px-6 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 shadow-sm transition ease-in-out duration-150 resize-none"></textarea>
-          <div className="text-center">
-            <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition ease-in-out duration-150">
-              Submit
-            </button>
-          </div>
-        </form>
+        <div className="mt-6">
+          <p className="text-gray-600"><strong>Email:</strong> <a href="mailto:office.msf@gmail.com" className="text-red-500">office.msf@gmail.com</a></p>
+          {/* <p className="text-gray-600"><strong>Phone:</strong> +1 234 567 890</p> */}
+          <p className="text-gray-600"><strong>Address:</strong> N 91, Basement, Greater Kailash-1, New Delhi 110048</p>
+        </div>
       </div>
     </section>
   );

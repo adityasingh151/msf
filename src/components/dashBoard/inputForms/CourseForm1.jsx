@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { getDatabase, ref, set, push, get } from 'firebase/database';
 import { BsPlusCircle, BsDashCircle } from 'react-icons/bs';
 import Loading from '../../LoadSaveAnimation/Loading';
@@ -7,16 +8,19 @@ import Saving from '../../LoadSaveAnimation/Saving';
 import SuccessNotification from '../../LoadSaveAnimation/SuccessNotification';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
 
-const CourseForm1 = ({ editMode, courseId }) => {
+const CourseForm1 = ({ editMode }) => {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const [fields, setFields] = useState(['title', 'content', 'details', 'duration', 'fees', 'imgSrc']);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { courseId } = useParams();
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [imgPreview, setImgPreview] = useState(null);
 
+  // Load course data in edit mode
   useEffect(() => {
+    console.log(editMode, courseId)
     if (editMode && courseId) {
       const db = getDatabase();
       const courseRef = ref(db, `coursesPage1/${courseId}`);

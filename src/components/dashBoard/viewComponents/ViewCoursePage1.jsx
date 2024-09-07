@@ -23,7 +23,7 @@ const ViewCoursePage1 = () => {
         const courseList = Object.keys(data).map(courseId => ({
           id: courseId,
           ...data[courseId]
-        })).filter(course => course.category === 'teachers'); // Filter by category
+        }));
         setCourses(courseList);
       } else {
         setCourses([]);
@@ -55,6 +55,7 @@ const ViewCoursePage1 = () => {
   };
 
   const handleEdit = (course) => {
+    console.log(course.id)
     navigate(`/admin/forms/course1/edit/${course.id}`);
   };
 
@@ -62,27 +63,27 @@ const ViewCoursePage1 = () => {
     setNotification({ message: '', type: '' });
   };
 
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="max-w-6xl mx-auto py-6">
-      <h1 className="text-3xl font-semibold text-center mb-6">Manage Courses</h1>
+      <h1 className="text-3xl font-semibold text-center mb-6">Manage Teacher Courses</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {courses.map((course) => (
           <div key={course.id} className="bg-white shadow rounded overflow-hidden">
-            <img src={course.imgSrc} alt={course.title} className="w-full h-48 object-cover"/>
+            <img src={course.imgSrc} alt={course.title} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h3 className="font-bold text-lg">{course.title}</h3>
-              <p className="text-gray-600 text-sm mb-4">{course.description}</p>
+              <p className="text-gray-600 text-sm mb-4">{course.details}</p>
               <p className="font-semibold">{course.duration}</p>
               <p className="font-semibold">Rs. {course.fees}</p>
               <div className="flex justify-between items-center mt-4">
                 <button onClick={() => handleEdit(course)} className="text-blue-500 hover:text-blue-700 flex items-center">
-                  <BsPencilSquare className="mr-2"/>Edit
+                  <BsPencilSquare className="mr-2" />Edit
                 </button>
                 <button onClick={() => handleDelete(course)} className="text-red-500 hover:text-red-700 flex items-center">
-                  <BsTrash className="mr-2"/>Delete
+                  <BsTrash className="mr-2" />Delete
                 </button>
               </div>
             </div>

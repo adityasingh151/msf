@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ref, set, onValue } from 'firebase/database';
 import { txtdb } from '../../databaseConfig/firebaseConfig';
-import Saving from '../../LoadSaveAnimation/Saving';  // Importing the Saving component
-import Loading from '../../LoadSaveAnimation/Loading';  // Importing the Loading component
-import Notification from '../../Notification';  // Importing the Notification component
+import Saving from '../../LoadSaveAnimation/Saving';
+import Loading from '../../LoadSaveAnimation/Loading';
+import Notification from '../../Notification';
 
 const Initiative1Form = () => {
   const [data, setData] = useState({

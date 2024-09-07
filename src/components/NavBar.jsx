@@ -55,7 +55,7 @@ const Navbar = () => {
       dropdown: [
         { name: "Our Team", path: "/about/team" },
         { name: "Our Story", path: "/about/story" },
-        { name: "Library", path: "/about/library" }, // Added link to Research Papers
+        { name: "Publications", path: "/about/library" }, // Added link to Research Papers
       ],
     },
     {
@@ -199,12 +199,12 @@ const Navbar = () => {
             <a href="https://www.facebook.com/MathSciFound" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaFacebook />
             </a>
-            <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+            {/* <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaTwitter />
             </a>
             <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaInstagram />
-            </a>
+            </a> */}
             <a href="https://www.linkedin.com/company/mathematical-sciences-foundation/people/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaLinkedin />
             </a>
