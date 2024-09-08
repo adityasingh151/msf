@@ -3,7 +3,7 @@ import { ref, onValue } from 'firebase/database';
 import { txtdb } from '../components/databaseConfig/firebaseConfig';
 import Loading from '../components/LoadSaveAnimation/Loading';
 import Notification from './Notification';
-import { motion } from 'framer-motion';
+import DOMPurify from 'dompurify';
 
 const EngineeringKitchenPage = () => {
   const [purpose, setPurpose] = useState('');
@@ -50,6 +50,10 @@ const EngineeringKitchenPage = () => {
     );
   }
 
+  // Sanitize content
+  const sanitizedPurpose = DOMPurify.sanitize(purpose);
+  const sanitizedAbout = DOMPurify.sanitize(about);
+
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
       <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
@@ -73,22 +77,16 @@ const EngineeringKitchenPage = () => {
         <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
           <div className="container mx-auto px-8">
             <h2 className="text-3xl font-bold mb-4 text-center capitalize">Our Vision and Purpose</h2>
-            <div className="text-lg leading-relaxed mb-4 font-serif">
-              {purpose.split('\n').map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))}
-            </div>
+            <div className="text-lg leading-relaxed mb-4 font-serif"
+                 dangerouslySetInnerHTML={{ __html: sanitizedPurpose }} />
           </div>
         </section>
 
         <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
           <div className="container mx-auto px-8">
             <h2 className="text-3xl font-bold mb-4 text-center capitalize">About Engineering Kitchen</h2>
-            <div className="text-lg leading-relaxed mb-4 font-serif">
-              {about.split('\n').map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))}
-            </div>
+            <div className="text-lg leading-relaxed mb-4 font-serif"
+                 dangerouslySetInnerHTML={{ __html: sanitizedAbout }} />
           </div>
         </section>
       </div>

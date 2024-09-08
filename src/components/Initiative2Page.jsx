@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import Loading from '../components/LoadSaveAnimation/Loading';
 import Notification from './Notification';
+import DOMPurify from 'dompurify';
 import { motion } from 'framer-motion';
-import { memo } from 'react';
 
 const Initiative2Page = memo(() => {
   const [data, setData] = useState({ story: '', vision: '' });
@@ -55,6 +55,10 @@ const Initiative2Page = memo(() => {
     );
   }
 
+  // Sanitize text content
+  const sanitizedStory = DOMPurify.sanitize(data.story);
+  const sanitizedVision = DOMPurify.sanitize(data.vision);
+
   return (
     <div className="font-lato text-gray-900 bg-gradient-to-r from-cyan-50 to-blue-100 min-h-screen">
       <div className="bg-gradient-to-r from-teal-600 to-blue-700 h-screen relative">
@@ -78,22 +82,16 @@ const Initiative2Page = memo(() => {
         <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
           <div className="container mx-auto px-8">
             <h2 className="text-3xl font-bold mb-4 text-center capitalize">Story</h2>
-            <div className="text-lg leading-relaxed mb-4 font-serif">
-              {data.story.split('\n').map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))}
-            </div>
+            <div className="text-lg leading-relaxed mb-4 font-serif"
+                 dangerouslySetInnerHTML={{ __html: sanitizedStory }} />
           </div>
         </section>
 
         <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100 mb-12">
           <div className="container mx-auto px-8">
             <h2 className="text-3xl font-bold mb-4 text-center capitalize">Vision</h2>
-            <div className="text-lg leading-relaxed mb-4 font-serif">
-              {data.vision.split('\n').map((line, index) => (
-                <span key={index}>{line}<br /></span>
-              ))}
-            </div>
+            <div className="text-lg leading-relaxed mb-4 font-serif"
+                 dangerouslySetInnerHTML={{ __html: sanitizedVision }} />
           </div>
         </section>
       </div>

@@ -1,7 +1,9 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 
 const HowToReach = React.forwardRef(({ location }, ref) => {
   const mapSrc = location && location.embedParams ? `https://www.google.com/maps/embed?pb=${location.embedParams}` : '';
+  const sanitizedLocationName = location?.name ? DOMPurify.sanitize(location.name) : '';
 
   return (
     <section ref={ref} className="py-4 px-2 bg-gradient-to-r animate-fly-in from-blue-100 to-cyan-50">
@@ -25,9 +27,10 @@ const HowToReach = React.forwardRef(({ location }, ref) => {
           )}
           {location && location.name && (
             <div className="md:w-1/4 p-4">
-              <p className="text-lg leading-relaxed">
-                The workshop is located at <span className='italic text-indigo-600'>{location.name}</span>.
-              </p>
+              <p
+                className="text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: sanitizedLocationName }}
+              />
             </div>
           )}
         </div>

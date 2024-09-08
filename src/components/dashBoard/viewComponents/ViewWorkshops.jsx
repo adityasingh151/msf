@@ -16,6 +16,7 @@ const ViewWorkshops = () => {
   
 
   useEffect(() => {
+    console.log("view works")
     const db = getDatabase();
     const workshopRef = ref(db, 'workshops');
 
@@ -60,7 +61,8 @@ const ViewWorkshops = () => {
   };
 
   const handleEdit = (workshop) => {
-    window.location.href = `/forms/workshop/edit/${workshop.id}`;
+    // console.log(workshop)
+    window.location.href = `/admin/forms/workshop/edit/${workshop.id}`;
   };
 
   if (isLoading) return <Loading/>;

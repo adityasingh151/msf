@@ -10,6 +10,7 @@ import SuccessNotification from '../../LoadSaveAnimation/SuccessNotification';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
 import { imgdb } from '../../databaseConfig/firebaseConfig'; // Import your Firebase configuration
 import moment from 'moment';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor'; // Update with the correct path
 
 const WorkshopForm = () => {
   const { register, handleSubmit, setValue, watch, formState: { errors }, control } = useForm();
@@ -18,7 +19,7 @@ const WorkshopForm = () => {
     'headerTitle',
     'aboutDescription',
     'aboutImage',
-    'registrationLink' // Moved registrationLink to header section
+    'registrationLink'
   ]);
 
   const aboutImage = watch('aboutImage');
@@ -37,7 +38,6 @@ const WorkshopForm = () => {
 
   useEffect(() => {
     if (workshopId) {
-      // Fetch the workshop details if workshopId is present
       const db = getDatabase();
       const workshopRef = ref(db, `workshops/${workshopId}`);
       get(workshopRef).then((snapshot) => {
@@ -46,7 +46,7 @@ const WorkshopForm = () => {
           Object.keys(data).forEach(key => {
             setValue(key, data[key]);
           });
-          setImagePreview(data.aboutImage); // Set image preview from URL
+          setImagePreview(data.aboutImage);
         }
         setIsLoading(false);
       }).catch((error) => {
@@ -155,7 +155,7 @@ const WorkshopForm = () => {
   };
 
   const sectionFields = {
-    headerSection: ['headerTitle', 'aboutDescription', 'aboutImage', 'registrationLink'], // Added registrationLink here
+    headerSection: ['headerTitle', 'aboutDescription', 'aboutImage', 'registrationLink'],
     reachSection: ['address', 'addressURL'],
     outcomesSection: ['outcomeContent'],
     quoteSection: ['quote'],
@@ -210,20 +210,7 @@ const WorkshopForm = () => {
                   {field.replace(/([A-Z])/g, ' $1')}
                   {['headerSubtitle', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration', 'registrationLink'].includes(field) ? null : <span className="text-red-500">*</span>}
                 </label>
-                {field === 'aboutDescription' ? (
-                  <textarea
-                    {...register(field, {
-                      required: activeSections.headerSection && 'This field is required',
-                      minLength: {
-                        value: 3,
-                        message: 'Minimum length is 3 characters'
-                      }
-                    })}
-                    className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
-                    rows="5"
-                    placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
-                  />
-                ) : field === 'aboutImage' ? (
+                {field === 'aboutImage' ? (
                   <Controller
                     name="aboutImage"
                     control={control}
@@ -247,6 +234,20 @@ const WorkshopForm = () => {
                         />
                         {imagePreview && <img src={imagePreview} alt="Preview" className="mt-4 h-48 w-auto border rounded-md mx-auto" />}
                       </div>
+                    )}
+                  />
+                ) : ['aboutDescription', 'registrationLink', 'address', 'addressURL', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration'].includes(field) ? (
+                  <Controller
+                    name={field}
+                    control={control}
+                    defaultValue=""
+                    rules={{ required: ['headerTitle', 'aboutDescription', 'aboutImage'].includes(field) ? activeSections.headerSection && 'This field is required' : false }}
+                    render={({ field: { onChange, value } }) => (
+                      <ReactQuillNewEditor
+                        value={value}
+                        onChange={onChange}
+                        placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
+                      />
                     )}
                   />
                 ) : (

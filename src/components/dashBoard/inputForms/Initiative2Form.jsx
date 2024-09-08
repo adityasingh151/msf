@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor';
 import { ref, set, onValue } from 'firebase/database';
 import { txtdb } from '../../databaseConfig/firebaseConfig';
 import Saving from '../../LoadSaveAnimation/Saving';  // Importing the Saving component
@@ -69,25 +70,26 @@ const Initiative2Form = () => {
       
       {!loading && (
         <>
+          
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">The Vision</h2>
-            <textarea
-              value={vision}
-              onChange={(e) => setVision(e.target.value)}
-              rows="4"
-              className="w-full p-4 border border-gray-300 rounded-lg"
-              placeholder="Enter the vision here..."
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Our Story</h2>
+            <ReactQuillNewEditor
+              value={story}
+              onChange={setStory}
+              theme="snow"
+              className="border border-gray-300 rounded-lg"
+              placeholder="Enter the story here..."
             />
           </section>
           
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Our Story</h2>
-            <textarea
-              value={story}
-              onChange={(e) => setStory(e.target.value)}
-              rows="4"
-              className="w-full p-4 border border-gray-300 rounded-lg"
-              placeholder="Enter the story here..."
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">The Vision</h2>
+            <ReactQuillNewEditor
+              value={vision}
+              onChange={setVision}
+              theme="snow"
+              className="border border-gray-300 rounded-lg"
+              placeholder="Enter the vision here..."
             />
           </section>
 

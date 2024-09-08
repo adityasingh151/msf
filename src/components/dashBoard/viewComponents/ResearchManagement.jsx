@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue, remove } from "firebase/database";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal'; 
 import Loading from '../../LoadSaveAnimation/Loading';
 import Notification from '../../Notification';
+import DOMPurify from 'dompurify';
 
 const ResearchManagement = () => {
   const [researchPapers, setResearchPapers] = useState([]);
@@ -12,7 +13,7 @@ const ResearchManagement = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
   useEffect(() => {
     const db = getDatabase();
@@ -42,12 +43,12 @@ const ResearchManagement = () => {
 
   const promptDelete = (paper) => {
     setSelectedPaper(paper);
-    setModalContent(`Are you sure you want to delete the research paper: ${paper.title}?`);
+    setModalContent(`Are you sure you want to delete the research paper: <strong>${DOMPurify.sanitize(paper.title)}</strong>?`);
     setShowModal(true);
   };
 
   const handleEdit = (paper) => {
-    navigate('/admin/forms/research', { state: { editData: paper } }); // Navigate to the form with the paper data
+    navigate('/admin/forms/research', { state: { editData: paper } });
   };
 
   if (isLoading) return <Loading />;
@@ -59,9 +60,15 @@ const ResearchManagement = () => {
         {researchPapers.map(paper => (
           <div key={paper.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">{paper.title}</h2>
-              <p className="text-gray-600">{paper.authors}</p>
-              <p className="text-gray-600">{paper.journal}</p>
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.title) }} />
+              </h2>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.authors) }} />
+              </p>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.journal) }} />
+              </p>
             </div>
             <div className="mt-4 flex justify-end space-x-2">
               <button
@@ -86,7 +93,7 @@ const ResearchManagement = () => {
         title="Confirm Deletion"
         onClose={() => setShowModal(false)}
       >
-        <p>{modalContent}</p>
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(modalContent) }} />
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={handleDelete}

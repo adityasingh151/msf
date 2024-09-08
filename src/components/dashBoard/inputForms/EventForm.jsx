@@ -63,69 +63,70 @@ const EventForm = () => {
   }, [eventId, setValue]);
 
   useEffect(() => {
-    if (aboutImage && aboutImage.length > 0) {
-      const file = aboutImage[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
-  }, [aboutImage]);
+  if (aboutImage && aboutImage[0] instanceof File) {  // Check if it's a File object
+    const file = aboutImage[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setImagePreview(null);
+  }
+}, [aboutImage]);
 
-  useEffect(() => {
-    if (sponsorImage1 && sponsorImage1.length > 0) {
-      const file = sponsorImage1[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSponsorImage1Preview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSponsorImage1Preview(null);
-    }
-  }, [sponsorImage1]);
+useEffect(() => {
+  if (sponsorImage1 && sponsorImage1[0] instanceof File) {  // Check if it's a File object
+    const file = sponsorImage1[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSponsorImage1Preview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setSponsorImage1Preview(null);
+  }
+}, [sponsorImage1]);
 
-  useEffect(() => {
-    if (sponsorImage2 && sponsorImage2.length > 0) {
-      const file = sponsorImage2[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSponsorImage2Preview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSponsorImage2Preview(null);
-    }
-  }, [sponsorImage2]);
+useEffect(() => {
+  if (sponsorImage2 && sponsorImage2[0] instanceof File) {  // Check if it's a File object
+    const file = sponsorImage2[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSponsorImage2Preview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setSponsorImage2Preview(null);
+  }
+}, [sponsorImage2]);
 
-  useEffect(() => {
-    if (sponsorImage3 && sponsorImage3.length > 0) {
-      const file = sponsorImage3[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSponsorImage3Preview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSponsorImage3Preview(null);
-    }
-  }, [sponsorImage3]);
+useEffect(() => {
+  if (sponsorImage3 && sponsorImage3[0] instanceof File) {  // Check if it's a File object
+    const file = sponsorImage3[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSponsorImage3Preview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setSponsorImage3Preview(null);
+  }
+}, [sponsorImage3]);
 
-  useEffect(() => {
-    if (sponsorImage4 && sponsorImage4.length > 0) {
-      const file = sponsorImage4[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSponsorImage4Preview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSponsorImage4Preview(null);
-    }
-  }, [sponsorImage4]);
+useEffect(() => {
+  if (sponsorImage4 && sponsorImage4[0] instanceof File) {  // Check if it's a File object
+    const file = sponsorImage4[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSponsorImage4Preview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setSponsorImage4Preview(null);
+  }
+}, [sponsorImage4]);
+
 
   useEffect(() => {
     // Simulate a delay to demonstrate the loading state

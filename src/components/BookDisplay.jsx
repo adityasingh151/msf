@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue } from "firebase/database";
 import Loading from './LoadSaveAnimation/Loading';
+import DOMPurify from 'dompurify';
 
 const BookDisplay = () => {
   const [books, setBooks] = useState([]);
@@ -36,13 +37,15 @@ const BookDisplay = () => {
             <div key={book.id} className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
               <div>
                 <h3 className="text-2xl font-bold mb-2 text-indigo-900">
-                  {book.title}
+                  <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.title) }} />
                 </h3>
                 <p className="text-lg font-medium text-gray-700 mb-1">
-                  <span className="text-gray-500">Author:</span> {book.author}
+                  <span className="text-gray-500">Author:</span> 
+                  <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.author) }} />
                 </p>
                 <p className="text-lg font-medium text-gray-700">
-                  <span className="text-gray-500">Publisher:</span> {book.publisher}
+                  <span className="text-gray-500">Publisher:</span> 
+                  <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.publisher) }} />
                 </p>
               </div>
             </div>

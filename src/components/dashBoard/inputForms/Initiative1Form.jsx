@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ref, set, onValue } from 'firebase/database';
+import { ref, get, set } from 'firebase/database';
 import { txtdb } from '../../databaseConfig/firebaseConfig';
 import Saving from '../../LoadSaveAnimation/Saving';
 import Loading from '../../LoadSaveAnimation/Loading';
 import Notification from '../../Notification';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor'; // Import the new ReactQuillNewEditor component
 
 const Initiative1Form = () => {
   const [data, setData] = useState({
@@ -36,12 +37,13 @@ const Initiative1Form = () => {
     const fetchData = async () => {
       try {
         const fetchedData = {};
-        for (const section of sections) {
+        const promises = sections.map(async (section) => {
           const sectionRef = ref(txtdb, `internetCollege/${section}`);
-          onValue(sectionRef, (snapshot) => {
-            fetchedData[section] = snapshot.val() || '';
-          });
-        }
+          const snapshot = await get(sectionRef);
+          fetchedData[section] = snapshot.val() || '';
+        });
+
+        await Promise.all(promises);
         setData(fetchedData);
         setLoading(false);
       } catch (error) {
@@ -88,14 +90,14 @@ const Initiative1Form = () => {
       {success && <Notification message={success} type="success" onClose={handleCloseNotification} />}
       {error && <Notification message={error} type="error" onClose={handleCloseNotification} />}
       
-      {Object.keys(data).map((key, index) => (
+      {loading && <Loading />}
+      
+      {!loading && Object.keys(data).map((key) => (
         <section key={key} className="mb-12">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4 capitalize">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h2>
-          <textarea
+          <ReactQuillNewEditor
             value={data[key]}
-            onChange={(e) => handleChange(key, e.target.value)}
-            rows="4"
-            className="w-full p-4 border border-gray-300 rounded-lg"
+            onChange={(content) => handleChange(key, content)}
             placeholder={`Enter the ${key} here...`}
           />
         </section>
@@ -110,7 +112,6 @@ const Initiative1Form = () => {
       </button>
 
       {saving && <Saving />}
-      {loading && <Loading />}
     </div>
   );
 };

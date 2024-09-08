@@ -6,6 +6,7 @@ import Loading from '../../LoadSaveAnimation/Loading';
 import Saving from '../../LoadSaveAnimation/Saving';
 import SuccessNotification from '../../LoadSaveAnimation/SuccessNotification';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor'; // Import the custom editor
 
 const ResearchForm = () => {
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
@@ -67,28 +68,28 @@ const ResearchForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input
-              type="text"
-              {...register('title', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.title : ''}
+              onChange={(content) => setValue('title', content)}
+              placeholder="Enter the research paper title"
             />
             {errors.title && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Authors</label>
-            <input
-              type="text"
-              {...register('authors', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.authors : ''}
+              onChange={(content) => setValue('authors', content)}
+              placeholder="Enter the research paper authors"
             />
             {errors.authors && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Journal</label>
-            <input
-              type="text"
-              {...register('journal', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.journal : ''}
+              onChange={(content) => setValue('journal', content)}
+              placeholder="Enter the journal name"
             />
             {errors.journal && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>

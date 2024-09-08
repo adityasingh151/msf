@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal';
 import Loading from '../../LoadSaveAnimation/Loading';
 import Notification from '../../Notification';
+import DOMPurify from 'dompurify';
 
 const ConferenceManagement = () => {
   const [conferences, setConferences] = useState([]);
@@ -42,7 +43,7 @@ const ConferenceManagement = () => {
 
   const promptDelete = (conference) => {
     setSelectedConference(conference);
-    setModalContent(`Are you sure you want to delete the conference: ${conference.title}?`);
+    setModalContent(`Are you sure you want to delete the conference: <strong>${DOMPurify.sanitize(conference.title)}</strong>?`);
     setShowModal(true);
   };
 
@@ -59,9 +60,15 @@ const ConferenceManagement = () => {
         {conferences.map(conference => (
           <div key={conference.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">{conference.title}</h2>
-              <p className="text-gray-600">{conference.date}</p>
-              <p className="text-gray-600">{conference.location}</p>
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conference.title) }} />
+              </h2>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conference.date) }} />
+              </p>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conference.location) }} />
+              </p>
             </div>
             <div className="mt-4 flex justify-end space-x-2">
               <button
@@ -86,7 +93,7 @@ const ConferenceManagement = () => {
         title="Confirm Deletion"
         onClose={() => setShowModal(false)}
       >
-        <p>{modalContent}</p>
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(modalContent) }} />
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={handleDelete}

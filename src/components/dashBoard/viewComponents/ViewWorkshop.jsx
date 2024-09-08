@@ -13,6 +13,7 @@ const ViewWorkshop = () => {
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
+    console.log("view workshop")
     const db = getDatabase();
     const workshopRef = ref(db, 'workshops');
 
@@ -57,7 +58,8 @@ const ViewWorkshop = () => {
   };
 
   const handleEdit = (workshop) => {
-    window.location.href = `/edit-workshop/${workshop.id}`; // Ensure this route is correctly set up
+    console.log('edit is called')
+    window.location.href = `/admin/${workshop.id}`; // Ensure this route is correctly set up
   };
 
   if (isLoading) return <Loading/>;

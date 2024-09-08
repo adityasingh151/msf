@@ -6,6 +6,7 @@ import Loading from '../../LoadSaveAnimation/Loading';
 import Saving from '../../LoadSaveAnimation/Saving';
 import SuccessNotification from '../../LoadSaveAnimation/SuccessNotification';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor' // Import the custom editor
 
 const BookForm = () => {
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
@@ -67,28 +68,28 @@ const BookForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input
-              type="text"
-              {...register('title', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.title : ''}
+              onChange={(content) => setValue('title', content)}
+              placeholder="Enter the book title"
             />
             {errors.title && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Author</label>
-            <input
-              type="text"
-              {...register('author', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.author : ''}
+              onChange={(content) => setValue('author', content)}
+              placeholder="Enter the author's name"
             />
             {errors.author && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Publisher</label>
-            <input
-              type="text"
-              {...register('publisher', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.publisher : ''}
+              onChange={(content) => setValue('publisher', content)}
+              placeholder="Enter the publisher's name"
             />
             {errors.publisher && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>

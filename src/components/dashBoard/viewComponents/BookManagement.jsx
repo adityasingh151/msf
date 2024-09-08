@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal';
 import Loading from '../../LoadSaveAnimation/Loading';
 import Notification from '../../Notification';
+import DOMPurify from 'dompurify';
 
 const BookManagement = () => {
   const [books, setBooks] = useState([]);
@@ -42,7 +43,7 @@ const BookManagement = () => {
 
   const promptDelete = (book) => {
     setSelectedBook(book);
-    setModalContent(`Are you sure you want to delete the book: ${book.title}?`);
+    setModalContent(`Are you sure you want to delete the book: <strong>${DOMPurify.sanitize(book.title)}</strong>?`);
     setShowModal(true);
   };
 
@@ -59,9 +60,15 @@ const BookManagement = () => {
         {books.map(book => (
           <div key={book.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">{book.title}</h2>
-              <p className="text-gray-600">{book.author}</p>
-              <p className="text-gray-600">{book.publisher}</p>
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.title) }} />
+              </h2>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.author) }} />
+              </p>
+              <p className="text-gray-600">
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.publisher) }} />
+              </p>
             </div>
             <div className="mt-4 flex justify-end space-x-2">
               <button
@@ -86,7 +93,7 @@ const BookManagement = () => {
         title="Confirm Deletion"
         onClose={() => setShowModal(false)}
       >
-        <p>{modalContent}</p>
+        <p dangerouslySetInnerHTML={{ __html: modalContent }} />
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={handleDelete}

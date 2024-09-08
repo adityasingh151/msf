@@ -3,6 +3,7 @@ import { ref, onValue } from 'firebase/database';
 import { txtdb } from '../components/databaseConfig/firebaseConfig';
 import Loading from '../components/LoadSaveAnimation/Loading';
 import Notification from './Notification';
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 const Initiative1Page = () => {
   const [data, setData] = useState({});
@@ -57,25 +58,19 @@ const Initiative1Page = () => {
     );
   }, []);
 
-  const renderContent = (text, key) => {
-    const lines = text.split('\n');
+  const renderContent = (htmlContent, key) => {
+    const sanitizedContent = DOMPurify.sanitize(htmlContent); // Sanitize HTML content
     const isExpanded = expandedSections.includes(key);
-    const visibleLines = isExpanded ? lines : lines.slice(0, 5);
-
-    const elements = visibleLines.map((line, index) => {
-      if (line.startsWith('•') || line.startsWith('-')) {
-        return <li key={index} className="list-disc pl-5">{line.slice(1).trim()}</li>;
-      } else if (line.trim() === '') {
-        return <br key={index} />;
-      } else {
-        return <p key={index} className="mb-4">{line}</p>;
-      }
-    });
+    const paragraphs = sanitizedContent.split('</p>'); // Split paragraphs to handle "Read More"
+    const visibleParagraphs = isExpanded ? paragraphs : paragraphs.slice(0, 2); // Show first 2 paragraphs initially
 
     return (
       <>
-        {elements}
-        {lines.length > 5 && (
+        <div
+          dangerouslySetInnerHTML={{ __html: visibleParagraphs.join('</p>') + '</p>' }}
+          className="mb-4"
+        />
+        {paragraphs.length > 2 && (
           <button
             onClick={() => toggleExpandSection(key)}
             className="text-blue-500 hover:underline"

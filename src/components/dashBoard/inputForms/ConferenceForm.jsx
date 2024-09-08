@@ -6,6 +6,7 @@ import Loading from '../../LoadSaveAnimation/Loading';
 import Saving from '../../LoadSaveAnimation/Saving';
 import SuccessNotification from '../../LoadSaveAnimation/SuccessNotification';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor'; // Import the custom editor
 
 const ConferenceForm = () => {
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm();
@@ -68,10 +69,10 @@ const ConferenceForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input
-              type="text"
-              {...register('title', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.title : ''}
+              onChange={(content) => setValue('title', content)}
+              placeholder="Enter the conference title"
             />
             {errors.title && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
@@ -86,18 +87,19 @@ const ConferenceForm = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Location</label>
-            <input
-              type="text"
-              {...register('location', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.location : ''}
+              onChange={(content) => setValue('location', content)}
+              placeholder="Enter the conference location"
             />
             {errors.location && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              {...register('description', { required: true })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            <ReactQuillNewEditor
+              value={editData ? editData.description : ''}
+              onChange={(content) => setValue('description', content)}
+              placeholder="Enter the conference description"
             />
             {errors.description && <p className="text-red-500 text-xs italic">This field is required</p>}
           </div>
