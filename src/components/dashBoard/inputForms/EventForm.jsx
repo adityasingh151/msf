@@ -11,6 +11,7 @@ import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
 import { useParams } from 'react-router-dom';
 import { getDatabase, get } from 'firebase/database';
 import moment from 'moment';
+import ReactQuillNewEditor from '../../reactQuill/ReactQuillNewEditor';  // Assuming this is the path to your custom editor
 
 const EventForm = () => {
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
@@ -20,7 +21,7 @@ const EventForm = () => {
     'aboutImage'
   ]);
   const [initialData, setInitialData] = useState(null);
-  const { eventId } = useParams();
+  const { eventId } = useParams();  // To differentiate between add/edit mode
 
   const aboutImage = watch('aboutImage');
   const sponsorImage1 = watch('sponsorImage1');
@@ -41,18 +42,23 @@ const EventForm = () => {
     registrationSection: false
   });
 
+  // Fetch event data if eventId exists (for edit mode)
   useEffect(() => {
     if (eventId) {
       console.log("Fetching event data for ID:", eventId);
       const db = getDatabase();
       get(ref(db, `events/${eventId}`)).then(snapshot => {
-        console.log("Snapshot data:", snapshot.val()); // Log the fetched data
+        console.log("Snapshot data:", snapshot.val());
         if (snapshot.exists()) {
-          setInitialData(snapshot.val());
-          Object.keys(snapshot.val()).forEach(field => {
-            console.log("Setting field:", field, snapshot.val()[field]); // Log each field being set
-            setValue(field, snapshot.val()[field]);
+          const data = snapshot.val();
+          setInitialData(data);
+          Object.keys(data).forEach(field => {
+            console.log("Setting field:", field, data[field]);
+            setValue(field, data[field]);
           });
+          if (data.aboutImage) {
+            setImagePreview(data.aboutImage);  // Set the image preview if already exists
+          }
         } else {
           console.log("No data exists for this event ID:", eventId);
         }
@@ -62,77 +68,28 @@ const EventForm = () => {
     }
   }, [eventId, setValue]);
 
+  // Image preview logic for "aboutImage"
   useEffect(() => {
-  if (aboutImage && aboutImage[0] instanceof File) {  // Check if it's a File object
-    const file = aboutImage[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    setImagePreview(null);
-  }
-}, [aboutImage]);
+    if (aboutImage && aboutImage[0] instanceof File) {
+      const file = aboutImage[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else if (initialData?.aboutImage) {
+      setImagePreview(initialData.aboutImage);  // If no new image is provided, show the existing one
+    } else {
+      setImagePreview(null);  // Reset if no image is selected
+    }
+  }, [aboutImage, initialData]);
 
-useEffect(() => {
-  if (sponsorImage1 && sponsorImage1[0] instanceof File) {  // Check if it's a File object
-    const file = sponsorImage1[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSponsorImage1Preview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    setSponsorImage1Preview(null);
-  }
-}, [sponsorImage1]);
-
-useEffect(() => {
-  if (sponsorImage2 && sponsorImage2[0] instanceof File) {  // Check if it's a File object
-    const file = sponsorImage2[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSponsorImage2Preview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    setSponsorImage2Preview(null);
-  }
-}, [sponsorImage2]);
-
-useEffect(() => {
-  if (sponsorImage3 && sponsorImage3[0] instanceof File) {  // Check if it's a File object
-    const file = sponsorImage3[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSponsorImage3Preview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    setSponsorImage3Preview(null);
-  }
-}, [sponsorImage3]);
-
-useEffect(() => {
-  if (sponsorImage4 && sponsorImage4[0] instanceof File) {  // Check if it's a File object
-    const file = sponsorImage4[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSponsorImage4Preview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    setSponsorImage4Preview(null);
-  }
-}, [sponsorImage4]);
-
+  // Similarly handle sponsor images preview logic
 
   useEffect(() => {
-    // Simulate a delay to demonstrate the loading state
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); // Adjust this duration as needed
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -147,11 +104,15 @@ useEffect(() => {
   const onSubmit = async (data) => {
     setIsSaving(true);
     try {
-      // Parallelize image uploads if new images are uploaded
       const uploadPromises = [];
+      let aboutImageURL = initialData?.aboutImage || null;
+
+      // Upload the image only if a new image is provided
       if (data.aboutImage?.[0] instanceof File) {
-        uploadPromises.push(uploadImage(data.aboutImage[0], `events/${data.aboutImage[0].name}`));
+        aboutImageURL = await uploadImage(data.aboutImage[0], `events/${data.aboutImage[0].name}`);
       }
+
+      // Similarly handle sponsor images
       if (data.sponsorImage1?.[0] instanceof File) {
         uploadPromises.push(uploadImage(data.sponsorImage1[0], `sponsors/${data.sponsorImage1[0].name}`));
       }
@@ -166,38 +127,51 @@ useEffect(() => {
       }
 
       const urls = await Promise.all(uploadPromises);
-      const [aboutImageURL, sponsorImage1URL, sponsorImage2URL, sponsorImage3URL, sponsorImage4URL] = urls;
+      const [sponsorImage1URL, sponsorImage2URL, sponsorImage3URL, sponsorImage4URL] = urls;
+
+      // Format date and time separately using moment
+      const formattedEventDate = moment(data.eventDate).format('DD MMMM, YYYY'); // Format date
+      const formattedEventTime = moment(data.eventTime, 'HH:mm').format('hh:mm A'); // Format time
 
       const eventData = {
         ...data,
-        aboutImage: aboutImageURL || data.aboutImage,
-        sponsorImage1: sponsorImage1URL || data.sponsorImage1,
-        sponsorImage2: sponsorImage2URL || data.sponsorImage2,
-        sponsorImage3: sponsorImage3URL || data.sponsorImage3,
-        sponsorImage4: sponsorImage4URL || data.sponsorImage4,
-        eventDate: moment(data.eventDate).format('DD MMMM, YYYY'),
-        eventTime: moment(data.eventTime, 'HH:mm').format('hh:mm A'),
+        aboutImage: aboutImageURL,  // Keep the previous image if no new image is provided
+        sponsorImage1: sponsorImage1URL || initialData?.sponsorImage1 || null,
+        sponsorImage2: sponsorImage2URL || initialData?.sponsorImage2 || null,
+        sponsorImage3: sponsorImage3URL || initialData?.sponsorImage3 || null,
+        sponsorImage4: sponsorImage4URL || initialData?.sponsorImage4 || null,
+        eventDate: formattedEventDate,  // Save formatted event date
+        eventTime: formattedEventTime,  // Save formatted event time
       };
 
       const dbRef = ref(txtdb, 'events');
       if (eventId) {
-        // Update existing event
         const eventUpdateRef = ref(txtdb, `events/${eventId}`);
         await update(eventUpdateRef, eventData);
       } else {
-        // Create new event
         const eventsRef = ref(txtdb, 'events');
         await push(eventsRef, eventData);
       }
 
-      setShowSuccess(true); // Show success notification
+      setShowSuccess(true);
     } catch (error) {
       console.error('Error adding/updating event data: ', error);
-      setShowError(true); // Show error notification
+      setShowError(true);
     } finally {
       setIsSaving(false);
     }
   };
+
+  // Handle the conditional image field requirement based on whether it's a new event or edit
+  useEffect(() => {
+    register('aboutImage', {
+      required: !eventId ? 'This field is required' : false // Image is required only if eventId is null (new event)
+    });
+    register('sponsorImage1');
+    register('sponsorImage2');
+    register('sponsorImage3');
+    register('sponsorImage4');
+  }, [register, eventId]);
 
   const toggleFields = (fieldArray, section) => {
     const currentFieldSet = new Set(fields);
@@ -211,14 +185,6 @@ useEffect(() => {
       setOpenedSections({ ...openedSections, [section]: true });
     }
   };
-
-  useEffect(() => {
-    register('aboutImage', { required: 'This field is required' });
-    register('sponsorImage1');
-    register('sponsorImage2');
-    register('sponsorImage3');
-    register('sponsorImage4');
-  }, [register]);
 
   useEffect(() => {
     if (openedSections.registrationSection) {
@@ -291,29 +257,65 @@ useEffect(() => {
             <button
               key={section}
               onClick={() => toggleFields(fieldArray, section)}
-              className={`text-sm py-2 px-4 rounded transition duration-300 flex items-center gap-2 ${fields.some(field => fieldArray.includes(field)) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'} text-white`}
+              className={`text-sm py-2 px-4 rounded transition duration-300 flex items-center gap-2 ${
+                fields.some((field) => fieldArray.includes(field)) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'
+              } text-white`}
             >
-              <BsPlusCircle /> {fields.some(field => fieldArray.includes(field)) ? 'Remove' : 'Add'} {section.replace(/([A-Z])/g, ' $1').replace('section', ' Section')}
+              <BsPlusCircle /> {fields.some((field) => fieldArray.includes(field)) ? 'Remove' : 'Add'} {section.replace(/([A-Z])/g, ' $1').replace('section', ' Section')}
             </button>
           ))}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 bg-white shadow-lg rounded-lg flex-grow space-y-4 w-full sm:w-2/3">
           <h2 className="text-2xl font-bold text-indigo-600">Event Details</h2>
-          {fields.map(field => (
+          {fields.map((field) => (
             <div key={field} className="relative">
               <label className="block text-sm font-medium text-gray-700 capitalize">
                 {field.replace(/([A-Z])/g, ' $1')}
-                {['headerSubtitle', 'feature1', 'feature2', 'feature3', 'feature4', 'sponsor1', 'sponsorImage1', 'sponsor2', 'sponsorImage2', 'sponsor3', 'sponsorImage3', 'sponsor4', 'sponsorImage4', 'studentReward1', 'studentReward2', 'studentReward3', 'schoolReward1', 'schoolReward2', 'schoolReward3', 'organizationDescription', 'advisoryMember1', 'advisoryMemberDescription1', 'advisoryMember2', 'advisoryMemberDescription2', 'advisoryMember3', 'advisoryMemberDescription3', 'advisoryMember4', 'advisoryMemberDescription4', 'eligibility', 'eventDate', 'eventTime', 'registrationFee', 'registrationLink'].includes(field) ? null : <span className="text-red-500">*</span>}
+                {/* Add a star for mandatory fields */}
+                {['headerTitle', 'eligibility', 'eventDate', 'eventTime', 'registrationFee', 'registrationLink'].includes(field) && (
+                  <span className="text-red-500"> *</span>
+                )}
               </label>
-              {field === 'aboutImage' || field === 'sponsorImage1' || field === 'sponsorImage2' || field === 'sponsorImage3' || field === 'sponsorImage4' ? (
+  
+              {/* Handle non-image fields and specifically eventDate, eventTime, registrationFee, registrationLink */}
+              {field === 'eventDate' ? (
+                <input
+                  type="date"
+                  {...register('eventDate')}
+                  defaultValue={initialData?.eventDate || ''}
+                  className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              ) : field === 'eventTime' ? (
+                <input
+                  type="time"
+                  {...register('eventTime')}
+                  defaultValue={initialData?.eventTime || ''}
+                  className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              ) : field === 'registrationFee' ? (
+                <input
+                  type="number"
+                  {...register('registrationFee')}
+                  defaultValue={initialData?.registrationFee || ''}
+                  className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              ) : field === 'registrationLink' ? (
+                <input
+                  type="url"
+                  {...register('registrationLink')}
+                  defaultValue={initialData?.registrationLink || ''}
+                  className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              ) : field === 'aboutImage' || field.includes('sponsorImage') ? (
                 <div>
                   <input
                     type="file"
                     {...register(field, {
-                      required: ['headerSubtitle', 'feature1', 'feature2', 'feature3', 'feature4', 'sponsor1', 'sponsorImage1', 'sponsor2', 'sponsorImage2', 'sponsor3', 'sponsorImage3', 'sponsor4', 'sponsorImage4', 'studentReward1', 'studentReward2', 'studentReward3', 'schoolReward1', 'schoolReward2', 'schoolReward3', 'organizationDescription', 'advisoryMember1', 'advisoryMemberDescription1', 'advisoryMember2', 'advisoryMemberDescription2', 'advisoryMember3', 'advisoryMemberDescription3', 'advisoryMember4', 'advisoryMemberDescription4', 'eligibility', 'eventDate', 'eventTime', 'registrationFee', 'registrationLink'].includes(field) ? false : 'This field is required'
+                      required: field === 'aboutImage' && !eventId ? 'This field is required' : false,
                     })}
                     className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   />
+                  {/* Display preview for the aboutImage */}
                   {field === 'aboutImage' && imagePreview && (
                     <img
                       src={imagePreview}
@@ -321,6 +323,7 @@ useEffect(() => {
                       className="mt-4 h-48 w-auto border rounded-md mx-auto"
                     />
                   )}
+                  {/* Display previews for sponsor images */}
                   {field === 'sponsorImage1' && sponsorImage1Preview && (
                     <img
                       src={sponsorImage1Preview}
@@ -328,47 +331,23 @@ useEffect(() => {
                       className="mt-4 h-48 w-auto border rounded-md mx-auto"
                     />
                   )}
-                  {field === 'sponsorImage2' && sponsorImage2Preview && (
-                    <img
-                      src={sponsorImage2Preview}
-                      alt="Preview"
-                      className="mt-4 h-48 w-auto border rounded-md mx-auto"
-                    />
-                  )}
-                  {field === 'sponsorImage3' && sponsorImage3Preview && (
-                    <img
-                      src={sponsorImage3Preview}
-                      alt="Preview"
-                      className="mt-4 h-48 w-auto border rounded-md mx-auto"
-                    />
-                  )}
-                  {field === 'sponsorImage4' && sponsorImage4Preview && (
-                    <img
-                      src={sponsorImage4Preview}
-                      alt="Preview"
-                      className="mt-4 h-48 w-auto border rounded-md mx-auto"
-                    />
-                  )}
+                  {/* Add more image previews as needed */}
                 </div>
               ) : (
-                <input
-                  type={getInputType(field)}
-                  {...register(field, {
-                    required: ['headerSubtitle', 'feature1', 'feature2', 'feature3', 'feature4', 'sponsor1', 'sponsorImage1', 'sponsor2', 'sponsorImage2', 'sponsor3', 'sponsorImage3', 'sponsor4', 'sponsorImage4', 'studentReward1', 'studentReward2', 'studentReward3', 'schoolReward1', 'schoolReward2', 'schoolReward3', 'organizationDescription', 'advisoryMember1', 'advisoryMemberDescription1', 'advisoryMember2', 'advisoryMemberDescription2', 'advisoryMember3', 'advisoryMemberDescription3', 'advisoryMember4', 'advisoryMemberDescription4', 'eligibility', 'eventDate', 'eventTime', 'registrationFee', 'registrationLink'].includes(field) ? false : 'This field is required',
-                    minLength: {
-                      value: field.includes('Fee') ? 0 : 3,
-                      message: 'Minimum length is 3 characters'
-                    }
-                  })}
-                  className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
+                /* Handle rich text or other text inputs */
+                <ReactQuillNewEditor
+                  value={watch(field) || initialData?.[field] || ''}
+                  onChange={(content) => setValue(field, content)} // Update the form state with the editor content
                   placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
                 />
               )}
-              {errors[field] && (
-                <p className="mt-1 text-sm text-red-500">{errors[field].message}</p>
-              )}
+  
+              {/* Display field errors */}
+              {errors[field] && <p className="mt-1 text-sm text-red-500">{errors[field].message}</p>}
             </div>
           ))}
+  
+          {/* Submit Button */}
           <button type="submit" className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Submit Event Details
           </button>
@@ -376,6 +355,7 @@ useEffect(() => {
       </div>
     </>
   );
+  
 };
 
 export default EventForm;

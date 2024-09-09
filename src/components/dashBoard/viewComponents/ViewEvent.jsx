@@ -3,6 +3,7 @@ import { getDatabase, ref, onValue, remove } from "firebase/database";
 import Modal from '../../Modal'; // Assuming Modal is a reusable component
 import Notification from '../../Notification'; // Import the Notification component
 import Loading from '../../LoadSaveAnimation/Loading';
+import DOMPurify from 'dompurify';
 
 const ViewEvent = () => {
   const [events, setEvents] = useState([]);
@@ -50,7 +51,11 @@ const ViewEvent = () => {
     window.location.href = `/admin/forms/event/edit/${event.id}`; // Direct navigation to edit route
   };
 
-  if (isLoading) return <Loading/>;
+  const sanitizeContent = (content) => {
+    return { __html: DOMPurify.sanitize(content) };
+  };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="container mx-auto p-4">
@@ -59,8 +64,11 @@ const ViewEvent = () => {
         {events.map(event => (
           <div key={event.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800">{event.headerTitle}</h2>
-              <p className="text-gray-600">{event.aboutDescription}</p>
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800" 
+                dangerouslySetInnerHTML={sanitizeContent(event.headerTitle)}
+              />
+              {/* Use dangerouslySetInnerHTML to safely render aboutDescription */}
+              <div className="text-gray-600" dangerouslySetInnerHTML={sanitizeContent(event.aboutDescription)} />
             </div>
             <div className="mt-4 flex justify-end space-x-2">
               <button

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
+import DOMPurify from 'dompurify';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,10 @@ const Navbar = () => {
       }
     });
   }, []);
+
+  const sanitizeContent = (content) => {
+    return { __html: DOMPurify.sanitize(content) };
+  };
 
   const navItems = [
     {
@@ -168,7 +173,7 @@ const Navbar = () => {
                           }
                           onClick={() => setIsOpen(false)} // Close the navbar on click
                         >
-                          {subItem.name}
+                          <span dangerouslySetInnerHTML={sanitizeContent(subItem.name)} />
                         </NavLink>
                         {subItem.subDropdown && (
                           <div className="absolute left-full top-0 w-fit hidden group-hover:block bg-gray-800 shadow-md rounded-md mt-0 z-50">
@@ -183,7 +188,7 @@ const Navbar = () => {
                                 }
                                 onClick={() => setIsOpen(false)} // Close the navbar on click
                               >
-                                {nestedItem.name}
+                                <span dangerouslySetInnerHTML={sanitizeContent(nestedItem.name)} />
                               </NavLink>
                             ))}
                           </div>
@@ -199,12 +204,6 @@ const Navbar = () => {
             <a href="https://www.facebook.com/MathSciFound" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaFacebook />
             </a>
-            {/* <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaTwitter />
-            </a>
-            <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaInstagram />
-            </a> */}
             <a href="https://www.linkedin.com/company/mathematical-sciences-foundation/people/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
               <FaLinkedin />
             </a>

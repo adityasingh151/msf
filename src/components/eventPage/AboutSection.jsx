@@ -1,7 +1,9 @@
-
 import React from 'react';
+import DOMPurify from 'dompurify';
 
 const AboutSection = React.forwardRef(({ content, imageUrl }, ref) => {
+  const sanitizedContent = content ? DOMPurify.sanitize(content) : '';
+
   return (
     <section
       id='about'
@@ -15,16 +17,21 @@ const AboutSection = React.forwardRef(({ content, imageUrl }, ref) => {
             <h2 className="text-3xl font-bold text-indigo-600 mb-6">
               About this Event
             </h2>
-            <p className="text-lg leading-relaxed">
-              {content}
-            </p>
+            {sanitizedContent && (
+              <div
+                className="text-lg leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+              />
+            )}
           </div>
           <div className="w-full md:w-1/2 p-4">
-            <img
-              src={imageUrl}
-              alt="About"
-              className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300"
-            />
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="About"
+                className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300"
+              />
+            )}
           </div>
         </div>
       </div>
