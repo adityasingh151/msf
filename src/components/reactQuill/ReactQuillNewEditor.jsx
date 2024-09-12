@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css'; // Import Quill editor styles
+import 'quill/dist/quill.snow.css'; // Import Quill editor styles
+// import './quill.css';
 
 const modules = {
   toolbar: [
     [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
     [{ 'size': [] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ 'list': 'ordered' }, { 'indent': '-1' }, { 'indent': '+1' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Added 'bullet' list option
+    [{ 'indent': '-1' }, { 'indent': '+1' }],
     ['link', 'image'],
     [{ 'color': [] }, { 'background': [] }], // Dropdown with color options
     [{ 'align': [] }],

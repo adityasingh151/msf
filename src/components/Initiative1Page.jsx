@@ -67,8 +67,9 @@ const Initiative1Page = () => {
     return (
       <>
         <div
+        
           dangerouslySetInnerHTML={{ __html: visibleParagraphs.join('</p>') + '</p>' }}
-          className="mb-4"
+          className="mb-4 ql-editor"
         />
         {paragraphs.length > 2 && (
           <button

@@ -9,7 +9,7 @@ const QuoteSection = React.forwardRef(({ quote }, ref) => {
       <div className="container mx-auto text-center">
         {quote && (
           <blockquote
-            className="text-4xl italic font-semibold"
+            className="text-4xl italic font-semibold ql-editor"
             dangerouslySetInnerHTML={{ __html: sanitizedQuote }}
           />
         )}

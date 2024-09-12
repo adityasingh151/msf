@@ -1,0 +1,81 @@
+/* Font Sizes */
+.ql-size-small {
+    font-size: 18px;
+  }
+  
+  .ql-size-large {
+    font-size: 28px;
+  }
+  
+  .ql-size-huge {
+    font-size: 38px;
+  }
+  
+  /* Font Formats */
+  .ql-font-serif {
+    font-family: serif;
+  }
+  
+  .ql-font-monospace {
+    font-family: monospace;
+  }
+  
+  /* Bold, Italic, Underline */
+  .ql-bold {
+    font-weight: bold;
+  }
+  
+  .ql-italic {
+    font-style: italic;
+  }
+  
+  .ql-underline {
+    text-decoration: underline;
+  }
+  
+  /* Lists */
+  .ql-list.ql-ordered {
+    list-style-type: decimal;
+  }
+  
+  .ql-list.ql-bullet {
+    list-style-type: disc;
+  }
+  
+  /* Blockquote */
+  .ql-blockquote {
+    border-left: 4px solid #ccc;
+    margin-bottom: 5px;
+    padding-left: 10px;
+  }
+  
+  /* Header */
+  .ql-header-1 {
+    font-size: 2em;
+  }
+  
+  .ql-header-2 {
+    font-size: 1.5em;
+  }
+  
+  .ql-header-3 {
+    font-size: 1.17em;
+  }
+  
+  /* Alignments */
+  .ql-align-center {
+    text-align: center;
+  }
+  
+  .ql-align-right {
+    text-align: right;
+  }
+  
+  .ql-align-justify {
+    text-align: justify;
+  }
+  
+  /* Bullet & ordered point */
+
+
+  

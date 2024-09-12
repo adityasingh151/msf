@@ -36,7 +36,7 @@ const BookDisplay = () => {
           {books.map(book => (
             <div key={book.id} className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
               <div>
-                <h3 className="text-2xl font-bold mb-2 text-indigo-900">
+                <h3 className="text-2xl font-bold mb-2 text-indigo-900 ">
                   <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(book.title) }} />
                 </h3>
                 <p className="text-lg font-medium text-gray-700 mb-1">

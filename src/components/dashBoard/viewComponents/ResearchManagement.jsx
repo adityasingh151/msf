@@ -61,13 +61,16 @@ const ResearchManagement = () => {
           <div key={paper.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
               <h2 className="text-2xl font-semibold mb-2 text-gray-800">
-                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.title) }} />
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.title) }} 
+                className='ql-editor'/>
               </h2>
               <p className="text-gray-600">
-                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.authors) }} />
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.authors) }} 
+                className='ql-editor'/>
               </p>
               <p className="text-gray-600">
-                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.journal) }} />
+                <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(paper.journal) }} 
+                className='ql-editor'/>
               </p>
             </div>
             <div className="mt-4 flex justify-end space-x-2">
@@ -93,7 +96,8 @@ const ResearchManagement = () => {
         title="Confirm Deletion"
         onClose={() => setShowModal(false)}
       >
-        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(modalContent) }} />
+        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(modalContent) }}
+        className='ql-editor' />
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={handleDelete}

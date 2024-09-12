@@ -14,7 +14,7 @@ const ScheduleSection = React.forwardRef(({ title, sessions }, ref) => {
       <div className="container mx-auto">
         {title && (
           <h2
-            className="text-3xl font-bold text-center text-indigo-600 mb-6"
+            className="text-3xl font-bold text-center text-indigo-600 mb-6 ql-editor"
             dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
           />
         )}
@@ -23,10 +23,11 @@ const ScheduleSection = React.forwardRef(({ title, sessions }, ref) => {
             {sanitizedSessions.map((session, index) => (
               <div key={index} className="p-4 border border-blue-300 rounded-lg hover:shadow-lg hover:bg-blue-200 transition duration-300">
                 {session.title && (
-                  <h3 className="text-2xl font-bold" dangerouslySetInnerHTML={{ __html: session.title }} />
+                  <h3 className="text-2xl font-bold ql-editor" dangerouslySetInnerHTML={{ __html: session.title }} />
                 )}
                 {session.details && session.details.map((detail, idx) => (
-                  <p key={idx} dangerouslySetInnerHTML={{ __html: detail }} />
+                  <p key={idx} dangerouslySetInnerHTML={{ __html: detail }} 
+                  className='ql-editor'/>
                 ))}
               </div>
             ))}

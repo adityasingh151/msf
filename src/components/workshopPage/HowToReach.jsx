@@ -28,7 +28,7 @@ const HowToReach = React.forwardRef(({ location }, ref) => {
           {location && location.name && (
             <div className="md:w-1/4 p-4">
               <p
-                className="text-lg leading-relaxed"
+                className="text-lg leading-relaxed ql-editor"
                 dangerouslySetInnerHTML={{ __html: sanitizedLocationName }}
               />
             </div>

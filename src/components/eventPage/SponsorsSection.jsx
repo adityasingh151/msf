@@ -13,7 +13,7 @@ const SponsorsSection = React.forwardRef(({ title, sponsors }, ref) => {
       <div className="container mx-auto px-8">
         {sanitizedTitle && (
           <h2
-            className="text-3xl font-bold text-center text-indigo-600 mb-6"
+            className="text-3xl font-bold text-center text-indigo-600 mb-6 ql-editor"
             dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
           />
         )}

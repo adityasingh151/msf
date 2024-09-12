@@ -12,8 +12,6 @@ const ViewWorkshops = () => {
   const [showModal, setShowModal] = useState(false);
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
   
-  
-  
 
   useEffect(() => {
     console.log("view works")
