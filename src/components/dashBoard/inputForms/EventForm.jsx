@@ -52,10 +52,22 @@ const EventForm = () => {
         if (snapshot.exists()) {
           const data = snapshot.val();
           setInitialData(data);
+  
+          // Iterate over the fields and set the value in the form
           Object.keys(data).forEach(field => {
-            console.log("Setting field:", field, data[field]);
-            setValue(field, data[field]);
+            if (field === 'eventDate') {
+              // Convert saved date (DD MMMM, YYYY) back to YYYY-MM-DD
+              const parsedDate = moment(data[field], 'DD MMMM, YYYY').format('YYYY-MM-DD');
+              setValue(field, parsedDate);
+            } else if (field === 'eventTime') {
+              // Convert saved time (hh:mm A) back to HH:mm (24-hour format)
+              const parsedTime = moment(data[field], 'hh:mm A').format('HH:mm');
+              setValue(field, parsedTime);
+            } else {
+              setValue(field, data[field]);
+            }
           });
+  
           if (data.aboutImage) {
             setImagePreview(data.aboutImage);  // Set the image preview if already exists
           }
@@ -67,6 +79,7 @@ const EventForm = () => {
       });
     }
   }, [eventId, setValue]);
+  
 
   // Image preview logic for "aboutImage"
   useEffect(() => {

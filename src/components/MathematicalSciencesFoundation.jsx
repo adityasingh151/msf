@@ -44,15 +44,17 @@ const MathematicalSciencesFoundation = () => {
       <section id='our-story' className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
-            <div className="w-full md:w-1/2 p-4">
-              <h2 className="text-indigo-600 text-3xl font-bold mb-4">Our Story</h2>
+            <div className="w-full p-4">
+              <h2 className="text-indigo-600 text-3xl font-bold mb-4 text-center">Our Story</h2>
               <p className="text-lg leading-relaxed mb-4 font-serif">
                 The Mathematical Sciences Foundation (MSF) has a rich history that traces back to the consolidation of various mathematical activities into the Centre for Mathematical Sciences (CMS) at St. Stephen's College in 1998. In 2000, substantial funding from ICICI Bank transformed CMS into the ICICI Centre for Mathematical Sciences (ICMS). This center rapidly expanded, offering innovative programs that outgrew its initial capacity, leading to the establishment of the Mathematical Sciences Foundation in July 2002. Dr. Anil Wilson, Principal of St. Stephen's College and former Vice-Chancellor of Himachal Pradesh University, served as the Founder Chairman.
               </p>
             </div>
-            <div className="w-full md:w-1/2 p-4">
+
+            {/* <div className="w-full md:w-1/2 p-4">
               <img src="https://mathscifound.org/wp-content/uploads/2019/02/blackboard-606627_960_720-1.jpg" alt="Our Story" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
-            </div>
+            </div> */}
+
           </div>
         </div>
       </section>
@@ -60,11 +62,11 @@ const MathematicalSciencesFoundation = () => {
       <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
-            <div className="w-full md:w-1/2 p-4">
+            {/* <div className="w-full md:w-1/2 p-4">
               <img src="https://mathscifound.org/wp-content/uploads/2019/02/blackboard-606627_960_720-1.jpg" alt="Our Mission" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
-            </div>
-            <div className="w-full md:w-1/2 p-4">
-              <h2 className="text-indigo-600 text-3xl font-bold mb-4">Our Mission</h2>
+            </div> */}
+            <div className="w-full  p-4">
+              <h2 className="text-indigo-600 text-3xl font-bold mb-4 text-center">Our Mission</h2>
               <p className="text-lg leading-relaxed mb-4 font-serif">
                 MSF's mission is to promote mathematics at all educational levels, from school to research. It operates from Delhi, India, and offers undergraduate programs in Mathematical Finance and Mathematical Simulation with IT, and graduate programs in partnership with the University of Houston leading to PhDs in Mathematics, Computer Science, and Physics. The foundation also hosts significant seminars and conferences, such as the "Life of Mathematics" and "Mathematics in the 20th Century," attracting prominent mathematicians worldwide.
               </p>
@@ -79,8 +81,8 @@ const MathematicalSciencesFoundation = () => {
       <section className="py-4 bg-gradient-to-r from-cyan-50 to-blue-100">
         <div className="container mx-auto px-8">
           <div className="flex flex-wrap">
-            <div className="w-full md:w-1/2 p-4">
-              <h2 className="text-indigo-600 text-3xl font-bold mb-4">How We Got Started</h2>
+            <div className="w-full p-4">
+              <h2 className="text-indigo-600 text-3xl font-bold mb-4 text-center">How We Got Started</h2>
               <p className="text-lg leading-relaxed mb-4 font-serif">
                 The roots of MSF go back to the mid-1990s with educational and research activities undertaken by a group of mathematicians from several institutions, such as University of Delhi, St. Stephen’s College, Indian Institute of Technology, Delhi, and the Indian Statistical Institute, Delhi. They were subsequently joined by members of the Economics and Physics faculties from St. Stephen’s College.
               </p>
@@ -88,9 +90,9 @@ const MathematicalSciencesFoundation = () => {
                 The early projects were mostly carried out with funding from the Department of Science and Technology (DST), Government of India. Notable amongst these was the project titled Mathematics in the Modern World (MMW), which ran from 1995 to 2001, and aimed at showing the applicability of mathematics in solving real-life problems.
               </p>
             </div>
-            <div className="w-full md:w-1/2 p-4">
+            {/* <div className="w-full md:w-1/2 p-4">
               <img src="https://mathscifound.org/wp-content/uploads/2019/02/1917286_120551681601_4593531_n_120551681601.jpg" alt="How We Got Started" className="w-full h-auto rounded-lg shadow-lg transition transform hover:scale-105 duration-300" />
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

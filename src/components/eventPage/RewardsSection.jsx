@@ -31,8 +31,8 @@ const RewardsSection = React.forwardRef(({ title, rewards }, ref) => {
                 const sanitizedSchools = reward.schools ? DOMPurify.sanitize(reward.schools) : '';
                 return (
                   <tr key={index}>
-                    <td className="p-4 border-b border-gray-300" dangerouslySetInnerHTML={{ __html: sanitizedStudents }} />
-                    <td className="p-4 border-b border-gray-300" dangerouslySetInnerHTML={{ __html: sanitizedSchools }} />
+                    <td className="p-4 border-b border-gray-300 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedStudents }} />
+                    <td className="p-4 border-b border-gray-300 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedSchools }} />
                   </tr>
                 );
               })}

@@ -213,7 +213,7 @@ const PeopleForm = () => {
                   <option value="">Select Position</option>
                   <option value="Office Bearers">Office Bearers</option>
                   <option value="Executive Committee">Executive Committee</option>
-                  <option value="Fellow">Fellow</option>
+                  <option value="Fellows">Fellow</option>
                   <option value="Staff">Staff</option>
                   <option value="Team">Team</option>
                 </select>

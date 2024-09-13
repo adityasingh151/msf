@@ -24,11 +24,11 @@ const AdvisorySection = React.forwardRef(({ title, members }, ref) => {
                   {member.name && (
                     // <strong>{member.name},</strong>
                     <span dangerouslySetInnerHTML={{ __html: sanitizedName }} 
-                    className='ql-editor'/>
+                    className=' m-0'/>
                   )}
                   {sanitizedDescription && (
                     <span dangerouslySetInnerHTML={{ __html: sanitizedDescription }} 
-                    className='ql-editor'/>
+                    className=' m-0'/>
                   )}
                 </li>
               );

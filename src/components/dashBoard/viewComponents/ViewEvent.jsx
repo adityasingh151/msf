@@ -64,11 +64,11 @@ const ViewEvent = () => {
         {events.map(event => (
           <div key={event.id} className="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-2xl font-semibold mb-2 text-gray-800 ql-editor" 
+              <h2 className="text-2xl font-semibold mb-2 text-gray-800 " 
                 dangerouslySetInnerHTML={sanitizeContent(event.headerTitle)}
               />
               {/* Use dangerouslySetInnerHTML to safely render aboutDescription */}
-              <div className="text-gray-600 ql-editor ql-editor" dangerouslySetInnerHTML={sanitizeContent(event.aboutDescription)} />
+              <div className="text-gray-600 ql-editor" dangerouslySetInnerHTML={sanitizeContent(event.aboutDescription)} />
             </div>
             <div className="mt-4 flex justify-end space-x-2">
               <button

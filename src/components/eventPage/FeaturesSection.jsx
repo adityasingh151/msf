@@ -14,7 +14,7 @@ const FeaturesSection = React.forwardRef(({ title, features }, ref) => {
         <div className="bg-white rounded-lg shadow-xl p-8">
           {sanitizedTitle && (
             <h2
-              className="text-3xl font-bold text-center text-indigo-700 mb-6 ql-editor"
+              className="text-3xl font-bold text-center text-indigo-700 mb-6 "
               dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
             />
           )}
@@ -23,7 +23,7 @@ const FeaturesSection = React.forwardRef(({ title, features }, ref) => {
               const sanitizedFeature = DOMPurify.sanitize(feature);
               return (
                 sanitizedFeature && (
-                  <li key={index} className="mb-4 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedFeature }} />
+                  <li key={index} className="mb-4 " dangerouslySetInnerHTML={{ __html: sanitizedFeature }} />
                 )
               );
             })}

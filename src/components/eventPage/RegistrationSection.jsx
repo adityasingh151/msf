@@ -18,19 +18,19 @@ const RegistrationSection = React.forwardRef(({ title, details, buttonText, onBu
       <div className="container mx-auto">
         <div className="max-w-screen-md mx-auto bg-white p-10 border border-gray-300 rounded-lg shadow-xl">
           {sanitizedTitle && (
-            <h2 className="text-4xl font-bold text-center text-blue-600 mb-8 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedTitle }} />
+            <h2 className="text-4xl font-bold text-center text-blue-600 mb-8 " dangerouslySetInnerHTML={{ __html: sanitizedTitle }} />
           )}
           {details.map((detail, index) => (
-            <p key={index} className="text-lg leading-relaxed text-gray-700 mb-4">
+            <p key={index} className="text-lg leading-relaxed text-gray-700 mb-4 flex">
               <strong>{detail.label}: </strong>
               <span dangerouslySetInnerHTML={createMarkup(detail.value)} 
-              className='ql-editor'/>
+              className=''/>
             </p>
           ))}
           <div className="text-center mt-8">
             {sanitizedButtonText && (
               <button
-                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ql-editor"
+                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 "
                 onClick={onButtonClick}
                 dangerouslySetInnerHTML={{ __html: sanitizedButtonText }}
               />
