@@ -23,10 +23,22 @@ function AdminLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
+      // Sign in user
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      dispatch(setUser({ uid: user.uid, email: user.email }));
-      navigate('/admin/dashboard');
+
+      // Retrieve the token and check for admin claims
+      const idTokenResult = await user.getIdTokenResult();
+
+      if (idTokenResult.claims.admin) {
+        // User is an admin
+        dispatch(setUser({ uid: user.uid, email: user.email, isAdmin: true }));
+        setNotification({ message: 'Logged in successfully as Admin!', type: 'success' });
+        navigate('/admin/dashboard');
+      } else {
+        // User is not an admin, show error
+        setNotification({ message: 'Access Denied: You do not have admin privileges.', type: 'error' });
+      }
     } catch (error) {
       setNotification({ message: "Failed to login: " + error.message, type: 'error' });
     }
