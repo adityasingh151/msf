@@ -17,6 +17,12 @@ const DashboardCard = () => {
       <div className="mb-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Manage Content</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+            onClick={() => handleNavigation('/admin/forms/resource')}
+            className="card cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-yellow-600"
+          >
+            Add Resource
+          </div>
           <div 
             onClick={() => handleNavigation('/admin/forms/course1')}
             className="card cursor-pointer bg-gradient-to-r from-indigo-500 to-indigo-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-indigo-600"
@@ -109,6 +115,12 @@ const DashboardCard = () => {
       <div className="mb-4">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">View Content</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div
+            onClick={() => handleNavigation('/admin/view/resources')}
+            className="card cursor-pointer bg-gradient-to-r from-teal-500 to-teal-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-teal-600"
+          >
+            View Resources
+          </div>
           <div 
             onClick={() => handleNavigation('/admin/view/courses')}
             className="card cursor-pointer bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-blue-600"

@@ -30,8 +30,15 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Loading from "./components/LoadSaveAnimation/Loading";
 import ResearchDisplay from "./components/ResearchDisplay";
 import LibraryDisplay from "./components/LibraryDisplay";
-const AdminLayout = lazy(() => import("./components/AdminLayout"));
-const DashboardCard = lazy(() => import("./components/DashboardCard"));
+import ResourceList from "./components/ResourceList";
+const AdminLayout = lazy(() =>
+  import("./components/AdminLayout"));
+const DashboardCard = lazy(() =>
+  import("./components/DashboardCard"));
+const ViewResources = lazy(() =>
+  import("./components/dashBoard/viewComponents/ViewResources"));
+const ResourceForm = lazy(() =>
+  import("./components/dashBoard/inputForms/ResourceForm"));
 const CourseForm1 = lazy(() =>
   import("./components/dashBoard/inputForms/CourseForm1")
 );
@@ -110,22 +117,22 @@ const Initiative1Form = lazy(() =>
 const Initiative3Form = lazy(() =>
   import("./components/dashBoard/inputForms/Initiative3Form")
 );
-const ResearchForm = lazy(() => 
+const ResearchForm = lazy(() =>
   import("./components/dashBoard/inputForms/ResearchForm")
 );
-const ResearchManagement = lazy(() => 
+const ResearchManagement = lazy(() =>
   import("./components/dashBoard/viewComponents/ResearchManagement")
 );
-const ConferenceForm = lazy(()=>
+const ConferenceForm = lazy(() =>
   import("./components/dashBoard/inputForms/ConferenceForm")
 );
-const ConferenceManagement = lazy(()=>
+const ConferenceManagement = lazy(() =>
   import("./components/dashBoard/viewComponents/ConferenceManagement")
 );
-const BookForm = lazy(()=>
+const BookForm = lazy(() =>
   import("./components/dashBoard/inputForms/BookForm")
 );
-const BookManagement = lazy(()=>
+const BookManagement = lazy(() =>
   import("./components/dashBoard/viewComponents/BookManagement")
 );
 
@@ -161,6 +168,14 @@ const router = createBrowserRouter([
           { path: "/initiatives", element: <Initiative2Page /> },
           { path: "/initiatives/startup", element: <Initiative2Page /> },
           {
+            path: "resources", // This route will show all resources
+            element: <ResourceList />,
+          },
+          {
+            path: "resources/:resourceId", // This route will show a specific resource based on its ID
+            element: <ResourceList />,
+          },
+          {
             path: "/initiatives/internetCollege",
             element: <Initiative1Page />,
           },
@@ -192,6 +207,30 @@ const router = createBrowserRouter([
                 element: (
                   <Suspense fallback={<Loading />}>
                     <DashboardCard />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "view/resources",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ViewResources />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "forms/resource",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ResourceForm />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "forms/resource/edit/:resourceId",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ResourceForm />
                   </Suspense>
                 ),
               },
