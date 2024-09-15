@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaLinkedin } from 'react-icons/fa';
 
 function Footer() {
   const currentYear = new Date().getFullYear(); // Get the current year dynamically
@@ -37,21 +37,21 @@ function Footer() {
               <img src="/msflogo.png" alt="Logo" className="sm:h-24 sm:w-24 h-12 w-12" />
             </Link>
             <div className="flex space-x-4">
-            <a href="https://www.facebook.com/MathSciFound" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaFacebook />
-            </a>
-            {/* <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaTwitter />
-            </a>
-            <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaInstagram />
-            </a> */}
-            <a href="https://www.linkedin.com/company/mathematical-sciences-foundation/people/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
-              <FaLinkedin />
-            </a>
+              <a href="https://www.facebook.com/MathSciFound" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+                <FaFacebook />
+              </a>
+              {/* <a href="https://www.twitter.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+                <FaTwitter />
+              </a>
+              <a href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+                <FaInstagram />
+              </a> */}
+              <a href="https://www.linkedin.com/company/mathematical-sciences-foundation/people/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-white">
+                <FaLinkedin />
+              </a>
             </div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-auto lg:gap-60 w-full lg:w-auto ">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-8 mx-auto lg:gap-60 w-full lg:w-auto">
             {footerItems.map((item, index) => (
               <div key={index}>
                 <p className="font-medium text-blue-400">{item.title}</p>
@@ -69,6 +69,16 @@ function Footer() {
       </div>
       <p className="mt-8 text-xs text-gray-400 text-center">
         © {currentYear} Mathematical Sciences Foundation. All rights reserved.
+      </p>
+      <p className="mt-0 text-xs text-gray-400 text-center">
+        Designed & developed by{' '}
+        <a href="https://www.linkedin.com/in/amangrd8/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300">
+          Aman Kumar
+        </a>{' '}
+        &{' '}
+        <a href="https://www.linkedin.com/in/aditya-singh-5b581125b/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300">
+          Aditya Singh
+        </a>
       </p>
     </footer>
   );

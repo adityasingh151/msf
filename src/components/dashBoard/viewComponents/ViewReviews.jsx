@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { getDatabase, ref, onValue, update, remove } from "firebase/database";
+import { getDatabase, ref, onValue, update, remove, push, set } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import Loading from '../../LoadSaveAnimation/Loading';
 import ErrorNotification from '../../LoadSaveAnimation/ErrorNotification';
@@ -19,7 +19,8 @@ const ViewReviews = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm();
+
 
   useEffect(() => {
     const db = getDatabase();
@@ -54,7 +55,6 @@ const ViewReviews = () => {
     setValue('name', review.name);
     setValue('review', review.review);
     setValue('designation', review.designation);
-    setImageFile(null); // Reset the image file when editing
   };
 
   const confirmDelete = (review) => {
@@ -79,45 +79,53 @@ const ViewReviews = () => {
     }
   };
 
-  const handleImageUpload = async (file) => {
-    const storage = getStorage();
-    const storagePath = `review_images/${file.name}`;
-    const imageRef = storageRef(storage, storagePath);
-
-    await uploadBytes(imageRef, file);
-    const imageURL = await getDownloadURL(imageRef);
-
-    return imageURL;
-  };
-
   const onSubmit = async (data) => {
     setIsSaving(true);
     try {
-      let imageUrl = editingReview?.imageUrl;
-
-      if (imageFile) {
-        imageUrl = await handleImageUpload(imageFile);
-      }
-
-      const reviewRef = ref(getDatabase(), `reviews/${editingReview.id}`);
-      await update(reviewRef, {
-        name: data.name,
-        review: data.review,
-        designation: data.designation,
-        imageUrl: imageUrl || editingReview?.imageUrl,
-      });
+      const db = getDatabase();
       
-      setReviews(reviews.map(review => review.id === editingReview.id ? { id: editingReview.id, ...data, imageUrl } : review));
+      if (editingReview) {
+        // If editingReview is set, update the existing review
+        const reviewRef = ref(db, `reviews/${editingReview.id}`);
+        await update(reviewRef, {
+          name: data.name,
+          review: data.review,
+          designation: data.designation,
+        });
+  
+        // Update the review in the state
+        setReviews(reviews.map(review =>
+          review.id === editingReview.id
+            ? { id: editingReview.id, name: data.name, review: data.review, designation: data.designation }
+            : review
+        ));
+      } else {
+        // If editingReview is null, add a new review
+        const reviewsRef = ref(db, 'reviews');
+        const newReviewRef = push(reviewsRef); // Generate a new reference with an auto-generated key
+        const newReview = {
+          name: data.name,
+          review: data.review,
+          designation: data.designation,
+        };
+        await set(newReviewRef, newReview); // Store the new review data
+  
+        // Add the new review to the state
+        setReviews([...reviews, { id: newReviewRef.key, ...newReview }]);
+      }
+  
       setShowSuccess(true);
-      setEditingReview(null);
-      setImageFile(null); // Reset the image file
+      setEditingReview(null); // Reset editing review state
+      reset(); // Clear form fields
     } catch (error) {
-      console.error('Error updating review: ', error);
+      console.error('Error saving review: ', error);
       setShowError(true);
     } finally {
       setIsSaving(false);
     }
   };
+  
+  
 
   if (isLoading) {
     return <Loading />;
@@ -140,9 +148,7 @@ const ViewReviews = () => {
                     <h3 className="text-xl font-bold text-rose-600">{review.name}</h3>
                     <p className="text-gray-500">{review.designation}</p>
                     <p className="mt-4 text-gray-700">{review.review}</p>
-                    {review.imageUrl && (
-                      <img src={review.imageUrl} alt="Reviewer" className="w-32 h-32 object-cover mt-4 rounded-full" />
-                    )}
+                    
                   </div>
                   <div className="flex gap-4">
                     <button
@@ -197,16 +203,6 @@ const ViewReviews = () => {
                     type="text"
                     {...register('designation')}
                     className="mt-1 block w-full pl-3 py-2 text-base text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  />
-                </label>
-              </div>
-              <div>
-                <label className="block text-base font-medium text-gray-700">
-                  Reviewer's Image
-                  <input
-                    type="file"
-                    onChange={(e) => setImageFile(e.target.files[0])}
-                    className="mt-1 block w-full text-gray-900 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </label>
               </div>

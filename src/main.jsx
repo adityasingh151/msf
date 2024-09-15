@@ -37,8 +37,12 @@ const DashboardCard = lazy(() =>
   import("./components/DashboardCard"));
 const ViewResources = lazy(() =>
   import("./components/dashBoard/viewComponents/ViewResources"));
+const ViewActivity = lazy(() =>
+  import("./components/dashBoard/viewComponents/ViewActivity"));
 const ResourceForm = lazy(() =>
   import("./components/dashBoard/inputForms/ResourceForm"));
+const ActivityForm = lazy(() =>
+  import("./components/dashBoard/inputForms/ActivityForm"));
 const CourseForm1 = lazy(() =>
   import("./components/dashBoard/inputForms/CourseForm1")
 );
@@ -219,6 +223,14 @@ const router = createBrowserRouter([
                 ),
               },
               {
+                path: "view/activities",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ViewActivity />
+                  </Suspense>
+                ),
+              },
+              {
                 path: "forms/resource",
                 element: (
                   <Suspense fallback={<Loading />}>
@@ -227,10 +239,26 @@ const router = createBrowserRouter([
                 ),
               },
               {
+                path: "forms/activity",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ActivityForm />
+                  </Suspense>
+                ),
+              },
+              {
                 path: "forms/resource/edit/:resourceId",
                 element: (
                   <Suspense fallback={<Loading />}>
                     <ResourceForm />
+                  </Suspense>
+                ),
+              },
+              {
+                path: "forms/activity/edit/:activityId",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ActivityForm />
                   </Suspense>
                 ),
               },

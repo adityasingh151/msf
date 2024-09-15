@@ -23,6 +23,12 @@ const DashboardCard = () => {
           >
             Add Resource
           </div>
+        <div
+            onClick={() => handleNavigation('/admin/forms/activity')}
+            className="card cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-yellow-600"
+          >
+            Add Activity
+          </div>
           <div 
             onClick={() => handleNavigation('/admin/forms/course1')}
             className="card cursor-pointer bg-gradient-to-r from-indigo-500 to-indigo-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-indigo-600"
@@ -120,6 +126,12 @@ const DashboardCard = () => {
             className="card cursor-pointer bg-gradient-to-r from-teal-500 to-teal-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-teal-600"
           >
             View Resources
+          </div>
+        <div
+            onClick={() => handleNavigation('/admin/view/activities')}
+            className="card cursor-pointer bg-gradient-to-r from-teal-500 to-teal-400 text-white shadow-lg rounded-lg p-6 text-center transition duration-300 ease-in-out hover:bg-teal-600"
+          >
+            View Activities
           </div>
           <div 
             onClick={() => handleNavigation('/admin/view/courses')}
