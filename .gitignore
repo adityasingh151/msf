@@ -6,3 +6,6 @@ assignAdmin.js
 
 # Ignore logs and temporary files
 *.log
+
+#ignore build files
+dist

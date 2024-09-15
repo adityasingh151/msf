@@ -122,12 +122,18 @@ const Navbar = () => {
       })),
     },
     {
-      name: "Resources",
-      path: `/resources`,
-      dropdown: resources.map((resource) => ({
-        name: resource.title,
-        path: `/resources/${resource.id}`, // Link to the specific resource
-      })),
+      name: "Others",
+      path: `/activities`,
+      dropdown: [
+        {
+          name:"Activities",
+          path:'/activities'
+        },
+        {
+          name:"Resources",
+          path:"/resources"
+        }
+      ]
     },
 
     {

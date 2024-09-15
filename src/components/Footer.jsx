@@ -29,7 +29,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-800 shadow-md relative z-50 py-6">
+    <footer className="bg-gray-800 shadow-md relative z-50 py-2">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-xl">
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center">
           <div className="mb-6 lg:mb-0 flex flex-col items-center lg:items-start">
@@ -70,13 +70,13 @@ function Footer() {
       <p className="mt-8 text-xs text-gray-400 text-center">
         © {currentYear} Mathematical Sciences Foundation. All rights reserved.
       </p>
-      <p className="mt-0 text-xs text-gray-400 text-center">
+      <p className="m-0 text-xs text-gray-400 text-center">
         Designed & developed by{' '}
-        <a href="https://www.linkedin.com/in/amangrd8/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300">
+        <a href="https://www.linkedin.com/in/amangrd8/" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300">
           Aman Kumar
         </a>{' '}
         &{' '}
-        <a href="https://www.linkedin.com/in/aditya-singh-5b581125b/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-yellow-300">
+        <a href="https://www.linkedin.com/in/aditya-singh-5b581125b/" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-300">
           Aditya Singh
         </a>
       </p>

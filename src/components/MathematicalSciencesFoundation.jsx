@@ -106,7 +106,7 @@ const MathematicalSciencesFoundation = () => {
                 onClick={handleClick}
                 className="bg-white text-purple-600 font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
             >
-                Learn Our Courses
+                Learn about our Courses
             </button>
         </div>
 

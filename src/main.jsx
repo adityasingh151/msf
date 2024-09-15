@@ -31,6 +31,7 @@ import Loading from "./components/LoadSaveAnimation/Loading";
 import ResearchDisplay from "./components/ResearchDisplay";
 import LibraryDisplay from "./components/LibraryDisplay";
 import ResourceList from "./components/ResourceList";
+import ActivityList from "./components/ActivityList";
 const AdminLayout = lazy(() =>
   import("./components/AdminLayout"));
 const DashboardCard = lazy(() =>
@@ -174,6 +175,10 @@ const router = createBrowserRouter([
           {
             path: "resources", // This route will show all resources
             element: <ResourceList />,
+          },
+          {
+            path: "activities", // This route will show all resources
+            element: <ActivityList />,
           },
           {
             path: "resources/:resourceId", // This route will show a specific resource based on its ID
