@@ -9,6 +9,7 @@ const modules = {
     [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
     [{ 'size': [] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ 'script': 'sub'}, { 'script': 'super' }], //Super & subscript
     [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Added 'bullet' list option
     [{ 'indent': '-1' }, { 'indent': '+1' }],
     ['link', 'image'],
@@ -21,6 +22,7 @@ const modules = {
 const formats = [
   'header', 'font', 'size',
   'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'script',
   'list', 'indent',
   'link', 'image', 'color', 'background', 'align'
 ];

@@ -268,6 +268,14 @@ const router = createBrowserRouter([
                 ),
               },
               {
+                path: "forms/conference/edit/:conferenceId",
+                element: (
+                  <Suspense fallback={<Loading />}>
+                    <ConferenceForm />
+                  </Suspense>
+                ),
+              },
+              {
                 path: "forms/research",
                 element: (
                   <Suspense fallback={<Loading />}>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import DOMPurify from 'dompurify';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { Link } from 'react-router-dom';
@@ -149,8 +150,10 @@ const WorksSection = () => {
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl">
                   <img src={work.image} alt={work.title} className="w-full h-64 object-cover" loading="lazy" />
                   <div className="p-4">
-                    <h5 className="text-2xl font-bold text-gray-800">{work.title}</h5>
-                    <p className="text-gray-700 mt-2">{work.description}</p>
+                    <h5 className="text-2xl font-bold text-gray-800"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(work.title) }}></h5>
+                    <p className="text-gray-700 mt-2"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(work.description) }}></p>
                   </div>
                 </div>
               </Link>
