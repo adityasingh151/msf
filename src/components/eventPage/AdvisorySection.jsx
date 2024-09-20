@@ -28,7 +28,7 @@ const AdvisorySection = React.forwardRef(({ title, members }, ref) => {
                   )}
                   {sanitizedDescription && (
                     <span dangerouslySetInnerHTML={{ __html: sanitizedDescription }} 
-                    className=' m-0'/>
+                    className=' m-0 text-justify'/>
                   )}
                 </li>
               );

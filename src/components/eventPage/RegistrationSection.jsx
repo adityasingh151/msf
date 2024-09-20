@@ -18,7 +18,7 @@ const RegistrationSection = React.forwardRef(({ title, details, buttonText, onBu
       <div className="container mx-auto">
         <div className="max-w-screen-md mx-auto bg-white p-10 border border-gray-300 rounded-lg shadow-xl">
           {sanitizedTitle && (
-            <h2 className="text-4xl font-bold text-center text-blue-600 mb-8 " dangerouslySetInnerHTML={{ __html: sanitizedTitle }} />
+            <h2 className="text-4xl font-bold text-center text-blue-600 mb-8 text-justify" dangerouslySetInnerHTML={{ __html: sanitizedTitle }} />
           )}
           {details.map((detail, index) => (
             <p key={index} className="text-lg leading-relaxed text-gray-700 mb-4 flex">

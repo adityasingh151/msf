@@ -14,7 +14,7 @@ const FeaturesSection = React.forwardRef(({ title, features }, ref) => {
         <div className="bg-white rounded-lg shadow-xl p-8">
           {sanitizedTitle && (
             <h2
-              className="text-3xl font-bold text-center text-indigo-700 mb-6 "
+              className="text-3xl font-bold text-center text-indigo-700 mb-6 text-justify"
               dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
             />
           )}

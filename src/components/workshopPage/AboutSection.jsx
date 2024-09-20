@@ -17,7 +17,7 @@ const AboutSection = React.forwardRef(({ title, content, imageUrl }, ref) => {
             <h2 className="text-3xl font-bold text-indigo-600 mb-6">About</h2>
             {content && (
               <p
-                className="text-lg leading-relaxed ql-editor"
+                className="text-lg leading-relaxed ql-editor text-justify"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
             )}

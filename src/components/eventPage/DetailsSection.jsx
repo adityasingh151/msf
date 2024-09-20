@@ -22,7 +22,7 @@ const DetailsSection = React.forwardRef(({ title, details }, ref) => {
                 <p key={index} className="text-lg leading-relaxed text-gray-700 mb-4">
                   <strong>{detail.label}:</strong>{' '}
                   <span dangerouslySetInnerHTML={{ __html: sanitizedValue }} 
-                  className='ql-editor'/>
+                  className='ql-editor text-justify'/>
                 </p>
               )
             );

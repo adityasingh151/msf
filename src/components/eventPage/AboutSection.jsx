@@ -19,7 +19,7 @@ const AboutSection = React.forwardRef(({ content, imageUrl }, ref) => {
             </h2>
             {sanitizedContent && (
               <div
-                className="text-lg leading-relaxed ql-editor"
+                className="text-lg leading-relaxed ql-editor text-justify"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
               />
             )}

@@ -111,7 +111,7 @@ const People = React.memo(() => {
                 <div className="flex flex-wrap items-center mb-10">
                     <div className="md:flex w-full bg-gradient-to-r from-teal-700 to-cyan-500 text-white rounded-lg shadow-lg">
                         <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Pro._Dinesh_Singh_Photo-_High_resolution_1.jpg/1280px-Pro._Dinesh_Singh_Photo-_High_resolution_1.jpg"
+                            src="/Director.JPG"
                             alt="Prof. Dinesh Singh"
                             className="md:w-1/2 w-full h-auto object-cover rounded-lg"
                         />

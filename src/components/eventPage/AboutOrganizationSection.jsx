@@ -19,7 +19,7 @@ const AboutOrganizationSection = React.forwardRef(({ title, content }, ref) => {
           )}
           {sanitizedContent && (
             <div
-              className="text-lg leading-relaxed text-gray-700 ql-editor"
+              className="text-lg leading-relaxed text-gray-700 ql-editor text-justify"
               dangerouslySetInnerHTML={{ __html: sanitizedContent }}
             />
           )}

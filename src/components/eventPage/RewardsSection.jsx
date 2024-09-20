@@ -14,7 +14,7 @@ const RewardsSection = React.forwardRef(({ title, rewards }, ref) => {
         <div className="bg-white rounded-lg shadow-xl p-8">
           {sanitizedTitle && (
             <h2
-              className="text-3xl font-bold text-center text-indigo-700 mb-6 ql-editor"
+              className="text-3xl font-bold text-center text-indigo-700 mb-6 ql-editor text-center"
               dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
             />
           )}
@@ -31,8 +31,8 @@ const RewardsSection = React.forwardRef(({ title, rewards }, ref) => {
                 const sanitizedSchools = reward.schools ? DOMPurify.sanitize(reward.schools) : '';
                 return (
                   <tr key={index}>
-                    <td className="p-4 border-b border-gray-300 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedStudents }} />
-                    <td className="p-4 border-b border-gray-300 ql-editor" dangerouslySetInnerHTML={{ __html: sanitizedSchools }} />
+                    <td className="p-4 border-b border-gray-300 ql-editor text-center" dangerouslySetInnerHTML={{ __html: sanitizedStudents }} />
+                    <td className="p-4 border-b border-gray-300 ql-editor text-center" dangerouslySetInnerHTML={{ __html: sanitizedSchools }} />
                   </tr>
                 );
               })}
