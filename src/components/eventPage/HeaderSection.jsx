@@ -1,7 +1,7 @@
 import React from 'react';
 import DOMPurify from 'dompurify';
 
-const HeaderSection = React.forwardRef(({ title, subtitle, buttonText, onButtonClick }, ref) => {
+const HeaderSection = React.forwardRef(({ title, subtitle, buttonText, onButtonClick, registrationInfo }, ref) => {
   const sanitizedTitle = title ? DOMPurify.sanitize(title) : '';
   const sanitizedSubtitle = subtitle ? DOMPurify.sanitize(subtitle) : '';
   const sanitizedButtonText = buttonText ? DOMPurify.sanitize(buttonText) : '';
@@ -19,7 +19,7 @@ const HeaderSection = React.forwardRef(({ title, subtitle, buttonText, onButtonC
         {sanitizedSubtitle && (
           <p className="text-blue-100 text-md font-bold mb-1 animate-pulse italic" dangerouslySetInnerHTML={{ __html: sanitizedSubtitle }} />
         )}
-        {sanitizedButtonText && (
+        {registrationInfo!=null && (
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
             onClick={onButtonClick}

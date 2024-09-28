@@ -105,6 +105,7 @@ const EventPage = () => {
           title={headerTitle}
           subtitle={headerSubtitle}
           buttonText={headerButtonText}
+          registrationInfo={registrationInfo}
           onButtonClick={onRegistrationButtonClick}
         />
       )}
@@ -133,7 +134,7 @@ const EventPage = () => {
         />
       )}
 
-      {registrationDetails.length > 0 && (
+      {registrationInfo!=null && (
         <RegistrationSection
           ref={sectionRefs.registration}
           title={registrationTitle}

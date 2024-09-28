@@ -43,9 +43,21 @@ const WorkshopForm = () => {
       get(workshopRef).then((snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
-          Object.keys(data).forEach(key => {
-            setValue(key, data[key]);
+  
+          // Convert date and time fields to appropriate formats
+          const formattedData = {
+            ...data,
+            workshopDate: data.workshopDate ? moment(data.workshopDate, 'DD MMMM, YYYY').format('YYYY-MM-DD') : '',
+            workshopStartTime: data.workshopStartTime ? moment(data.workshopStartTime, 'hh:mm A').format('HH:mm') : '',
+            workshopEndTime: data.workshopEndTime ? moment(data.workshopEndTime, 'hh:mm A').format('HH:mm') : ''
+          };
+  
+          // Set the form values using react-hook-form
+          Object.keys(formattedData).forEach(key => {
+            setValue(key, formattedData[key]);
           });
+  
+          // Set image preview if available
           setImagePreview(data.aboutImage);
         }
         setIsLoading(false);
@@ -58,6 +70,7 @@ const WorkshopForm = () => {
       setIsLoading(false);
     }
   }, [workshopId, setValue]);
+  
 
   useEffect(() => {
     if (aboutImage && aboutImage.length > 0 && typeof aboutImage[0] === 'object') {
@@ -203,73 +216,89 @@ const WorkshopForm = () => {
               onClose={() => setShowError(false)}
             />
           )}
-          {Object.entries(sectionFields).map(([section, fieldArray]) =>
-            activeSections[section] && fieldArray.map(field => (
-              <div key={field} className="relative">
-                <label className="block text-sm font-medium text-gray-700 capitalize">
-                  {field.replace(/([A-Z])/g, ' $1')}
-                  {['headerSubtitle', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration', 'registrationLink'].includes(field) ? null : <span className="text-red-500">*</span>}
-                </label>
-                {field === 'aboutImage' ? (
-                  <Controller
-                    name="aboutImage"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: activeSections.headerSection && 'This field is required' }}
-                    render={({ field: { onChange, value } }) => (
-                      <div>
-                        <input
-                          type="file"
-                          onChange={(e) => {
-                            onChange(e.target.files);
-                            if (e.target.files.length > 0) {
-                              const fileReader = new FileReader();
-                              fileReader.onload = (event) => setImagePreview(event.target.result);
-                              fileReader.readAsDataURL(e.target.files[0]);
-                            } else {
-                              setImagePreview(null);
-                            }
-                          }}
-                          className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        />
-                        {imagePreview && <img src={imagePreview} alt="Preview" className="mt-4 h-48 w-auto border rounded-md mx-auto" />}
-                      </div>
-                    )}
-                  />
-                ) : ['aboutDescription', 'registrationLink', 'address', 'addressURL', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration'].includes(field) ? (
-                  <Controller
-                    name={field}
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: ['headerTitle', 'aboutDescription', 'aboutImage'].includes(field) ? activeSections.headerSection && 'This field is required' : false }}
-                    render={({ field: { onChange, value } }) => (
-                      <ReactQuillNewEditor
-                        value={value}
-                        onChange={onChange}
-                        placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
-                      />
-                    )}
-                  />
-                ) : (
-                  <input
-                    type={getInputType(field)}
-                    {...register(field, {
-                      required: ['headerTitle', 'aboutDescription', 'aboutImage'].includes(field) ? activeSections.headerSection && 'This field is required' : false,
-                      minLength: {
-                        value: field.includes('Fee') ? 0 : 3,
-                        message: 'Minimum length is 3 characters'
-                      }
-                    })}
-                    className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
-                    placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
-                  />
-                )}
-                {errors[field] && (
-                  <p className="mt-1 text-sm text-red-500">{errors[field].message}</p>
-                )}
-              </div>
-            ))
+ {Object.entries(sectionFields).map(([section, fieldArray]) =>
+  activeSections[section] && fieldArray.map(field => (
+    <div key={field} className="relative">
+      <label className="block text-sm font-medium text-gray-700 capitalize">
+        {field.replace(/([A-Z])/g, ' $1')}
+        {['headerSubtitle', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration'].includes(field) ? null : <span className="text-red-500">*</span>}
+      </label>
+      {field === 'aboutImage' ? (
+        <Controller
+          name="aboutImage"
+          control={control}
+          defaultValue=""
+          rules={{ required: activeSections.headerSection && 'This field is required' }}
+          render={({ field: { onChange, value } }) => (
+            <div>
+              <input
+                type="file"
+                onChange={(e) => {
+                  onChange(e.target.files);
+                  if (e.target.files.length > 0) {
+                    const fileReader = new FileReader();
+                    fileReader.onload = (event) => setImagePreview(event.target.result);
+                    fileReader.readAsDataURL(e.target.files[0]);
+                  } else {
+                    setImagePreview(null);
+                  }
+                }}
+                className="mt-1 block w-full pl-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              {imagePreview && <img src={imagePreview} alt="Preview" className="mt-4 h-48 w-auto border rounded-md mx-auto" />}
+            </div>
           )}
+        />
+      ) : field === 'addressURL' ? (
+        <input
+          type="text"
+          {...register(field, { required: activeSections.reachSection && 'This field is required' })}
+          placeholder="Enter the address URL or embed ID"
+          className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
+        />
+      ) : field === 'registrationLink' ? (
+        <input
+          type="text"
+          {...register(field, { required: activeSections.headerSection && 'This field is required' })}
+          placeholder="Enter the registration link"
+          className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
+        />
+      ) : ['aboutDescription', 'address', 'outcomeContent', 'quote', 'prerequisites', 'designedFor', 'lastDateForRegistration'].includes(field) ? (
+        <Controller
+          name={field}
+          control={control}
+          defaultValue=""
+          rules={{ required: ['headerTitle', 'aboutDescription', 'aboutImage'].includes(field) ? activeSections.headerSection && 'This field is required' : false }}
+          render={({ field: { onChange, value } }) => (
+            <ReactQuillNewEditor
+              value={value}
+              onChange={onChange}
+              placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
+            />
+          )}
+        />
+      ) : (
+        <input
+          type={getInputType(field)}
+          {...register(field, {
+            required: ['headerTitle', 'aboutDescription', 'aboutImage'].includes(field) ? activeSections.headerSection && 'This field is required' : false,
+            minLength: {
+              value: field.includes('Fee') ? 0 : 3,
+              message: 'Minimum length is 3 characters'
+            }
+          })}
+          className={`mt-1 block w-full pl-3 pr-12 py-2 border ${errors[field] ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500`}
+          placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
+        />
+      )}
+      {errors[field] && (
+        <p className="mt-1 text-sm text-red-500">{errors[field].message}</p>
+      )}
+    </div>
+  ))
+)}
+
+
           <button type="submit" className="w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             {workshopId ? 'Update Workshop Details' : 'Submit Workshop Details'}
           </button>

@@ -21,7 +21,10 @@ const RegistrationSection = React.forwardRef(({ title, details, registrationInfo
           {sanitizedDetails && sanitizedDetails.map((detail, index) => (
             detail.value && (
               <p key={index} className="text-lg leading-relaxed text-gray-700 mb-4">
-                <strong>{detail.label}:</strong> {detail.value}
+                <strong className=''>{detail.label}:</strong>
+                <span
+                  dangerouslySetInnerHTML={{ __html: detail.value }}
+                />
               </p>
             )
           ))}
